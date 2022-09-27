@@ -97,6 +97,9 @@
   font-size: 1.8rem;
   line-height: 2rem;
 
+  transform: translateX(2.5rem);
+  opacity: 0;
+
   @media (min-width: $stop-scaling) {
     margin-top: 36px;
     max-width: 340px;
@@ -123,6 +126,19 @@
     font-size: 1.4rem;
     line-height: 1.5rem;
   }
+}
+
+
+.slider__item.swiper-slide-active .slider__item-text {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.5s ease-out 1s;
+}
+
+.slider__item.swiper-slide-next .slider__item-text {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.5s ease-out 1.5s;
 }
 
 .slider__controls {
