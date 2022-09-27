@@ -2,9 +2,7 @@ import throttle from 'lodash/throttle';
 
 export default class FullPageScroll {
   constructor() {
-    this.THROTTLE_TIMEOUT = 1000;
-    this.scrollFlag = true;
-    this.timeout = null;
+    this.THROTTLE_TIMEOUT = 2000;
 
     this.screenElements = document.querySelectorAll(`.screen:not(.screen--result)`);
     this.menuElements = document.querySelectorAll(`.page-header__menu .js-menu-link`);
@@ -22,21 +20,11 @@ export default class FullPageScroll {
   }
 
   onScroll(evt) {
-    if (this.scrollFlag) {
-      this.reCalculateActiveScreenPosition(evt.deltaY);
-      const currentPosition = this.activeScreen;
-      if (currentPosition !== this.activeScreen) {
-        this.changePageDisplay();
-      }
+    const currentPosition = this.activeScreen;
+    this.reCalculateActiveScreenPosition(evt.deltaY);
+    if (currentPosition !== this.activeScreen) {
+      this.changePageDisplay();
     }
-    this.scrollFlag = false;
-    if (this.timeout !== null) {
-      clearTimeout(this.timeout);
-    }
-    this.timeout = setTimeout(() => {
-      this.timeout = null;
-      this.scrollFlag = true;
-    }, this.THROTTLE_TIMEOUT);
   }
 
   onUrlHashChanged() {
