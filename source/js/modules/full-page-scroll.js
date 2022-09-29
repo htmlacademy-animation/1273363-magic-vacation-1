@@ -34,7 +34,16 @@ export default class FullPageScroll {
   }
 
   changePageDisplay() {
-    this.changeVisibilityDisplay();
+    let preloadBg = document.querySelector(`.bg-fill`);
+    if (this.screenElements[this.activeScreen].classList.contains(`screen--prizes`)) {
+      preloadBg.classList.add(`active`);
+      setTimeout(() => {
+        this.changeVisibilityDisplay();
+        preloadBg.classList.remove(`active`);
+      }, 700);
+    } else {
+      this.changeVisibilityDisplay();
+    }
     this.changeActiveMenuItem();
     this.emitChangeDisplayEvent();
   }
