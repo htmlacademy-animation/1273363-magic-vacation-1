@@ -87,13 +87,15 @@
 
 .rules__item:nth-child(1) {
   p {
-    transition: all 0.3s 0.3s;
+    transition: opacity 0.3s 0.3s,
+      transform 0.3s 0.3s;
   }
 }
 
 .rules__item:nth-child(2) {
   p {
-    transition: all 0.3s 0.6s;
+    transition: opacity 0.3s 0.6s,
+      transform 0.3s 0.6s;
   }
 
   &::before {
@@ -104,7 +106,8 @@
 
 .rules__item:nth-child(3) {
   p {
-    transition: all 0.3s 0.9s;
+    transition: opacity 0.3s 0.9s,
+      transform 0.3s 0.9s;
   }
 
   &::before {
@@ -115,7 +118,8 @@
 
 .rules__item:nth-child(4) {
   p {
-    transition: all 0.3s 1.2s;
+    transition: opacity 0.3s 1.2s,
+      transform 0.3s 1.2s;
   }
 
   &::before {
