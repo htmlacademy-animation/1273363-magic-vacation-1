@@ -12,8 +12,6 @@ class AccentTypographyBuild {
       classForActivate,
       property
   ) {
-    this._TIME_SPACE = 100;
-
     this._elementSelector = elementSelector;
     this._timer = timer;
     this._classForActivate = classForActivate;
@@ -21,7 +19,7 @@ class AccentTypographyBuild {
     this._element = document.querySelector(this._elementSelector);
     this._timeOffset = 0;
 
-    this.prePareText();
+    this.prepareText();
   }
 
   createElement(letter, index) {
@@ -34,33 +32,31 @@ class AccentTypographyBuild {
     return span;
   }
 
-  prePareText() {
-    if (!this._element) {
-      return;
-    }
-    const text = this._element.textContent.trim().split(` `).filter((latter) => latter !== ``);
+  prepareText() {
+    if (this._element) {
+      const text = this._element.textContent.trim().split(` `).filter((letter) => letter !== ``);
 
-    const content = text.reduce((fragmentParent, word) => {
-      const wordElement = Array.from(word).reduce((fragment, latter, index) => {
-        fragment.appendChild(this.createElement(latter, index));
-        return fragment;
+      const content = text.reduce((fragmentParent, word) => {
+        const wordElement = Array.from(word).reduce((fragment, letter, index) => {
+          fragment.appendChild(this.createElement(letter, index));
+          return fragment;
+        }, document.createDocumentFragment());
+        const wordContainer = document.createElement(`span`);
+        wordContainer.classList.add(`text__word`);
+        wordContainer.appendChild(wordElement);
+        fragmentParent.appendChild(wordContainer);
+        return fragmentParent;
       }, document.createDocumentFragment());
-      const wordContainer = document.createElement(`span`);
-      wordContainer.classList.add(`text__word`);
-      wordContainer.appendChild(wordElement);
-      fragmentParent.appendChild(wordContainer);
-      return fragmentParent;
-    }, document.createDocumentFragment());
 
-    this._element.innerHTML = ``;
-    this._element.appendChild(content);
+      this._element.innerHTML = ``;
+      this._element.appendChild(content);
+    }
   }
 
   runAnimation() {
-    if (!this._element) {
-      return;
+    if (this._element) {
+      this._element.classList.add(this._classForActivate);
     }
-    this._element.classList.add(this._classForActivate);
   }
 
   destroyAnimation() {

@@ -3,6 +3,7 @@ import Swiper from "swiper";
 export default () => {
   let storySlider;
   let sliderContainer = document.getElementById(`story`);
+  let bodyDOM = document.querySelector(`body`);
   sliderContainer.style.backgroundImage = `url("img/slide1.jpg"), linear-gradient(180deg, rgba(83, 65, 118, 0) 0%, #523E75 16.85%)`;
 
   const setSlider = function () {
@@ -23,8 +24,10 @@ export default () => {
               sliderContainer.style.backgroundImage = `url("img/slide2.jpg"), linear-gradient(180deg, rgba(45, 54, 179, 0) 0%, #2A34B0 16.85%)`;
             } else if (storySlider.activeIndex === 4 || storySlider.activeIndex === 5) {
               sliderContainer.style.backgroundImage = `url("img/slide3.jpg"), linear-gradient(180deg, rgba(92, 138, 198, 0) 0%, #5183C4 16.85%)`;
+              bodyDOM.addClass(`story-slide-3`);
             } else if (storySlider.activeIndex === 6 || storySlider.activeIndex === 7) {
               sliderContainer.style.backgroundImage = `url("img/slide4.jpg"), linear-gradient(180deg, rgba(45, 39, 63, 0) 0%, #2F2A42 16.85%)`;
+              bodyDOM.addClass(`story-slide-4`);
             }
           },
           resize: () => {
@@ -51,14 +54,24 @@ export default () => {
         },
         on: {
           slideChange: () => {
-            if (storySlider.activeIndex === 0) {
-              sliderContainer.style.backgroundImage = `url("img/slide1.jpg")`;
-            } else if (storySlider.activeIndex === 2) {
-              sliderContainer.style.backgroundImage = `url("img/slide2.jpg")`;
-            } else if (storySlider.activeIndex === 4) {
-              sliderContainer.style.backgroundImage = `url("img/slide3.jpg")`;
-            } else if (storySlider.activeIndex === 6) {
-              sliderContainer.style.backgroundImage = `url("img/slide4.jpg")`;
+            for (let i = 1; i <= 4; i++) {
+              if (storySlider.activeIndex === 0) {
+                sliderContainer.style.backgroundImage = `url("img/slide1.jpg")`;
+                bodyDOM.classList.remove(`story-slide-${i}`);
+                bodyDOM.classList.add(`story-slide-1`);
+              } else if (storySlider.activeIndex === 2) {
+                sliderContainer.style.backgroundImage = `url("img/slide2.jpg")`;
+                bodyDOM.classList.remove(`story-slide-${i}`);
+                bodyDOM.classList.add(`story-slide-2`);
+              } else if (storySlider.activeIndex === 4) {
+                sliderContainer.style.backgroundImage = `url("img/slide3.jpg")`;
+                bodyDOM.classList.remove(`story-slide-${i}`);
+                bodyDOM.classList.add(`story-slide-3`);
+              } else if (storySlider.activeIndex === 6) {
+                sliderContainer.style.backgroundImage = `url("img/slide4.jpg")`;
+                bodyDOM.classList.remove(`story-slide-${i}`);
+                bodyDOM.classList.add(`story-slide-4`);
+              }
             }
           },
           resize: () => {
