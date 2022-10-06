@@ -1,0 +1,129 @@
+@keyframes suitcase {
+  to {
+    width: 42rem;
+    transform: translateX(-50%) translateY(-4rem);
+  }
+}
+
+@keyframes leaf-1 {
+  30% {
+    opacity: 0.5;
+    transform: rotate(20deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: rotate(-3deg);
+  }
+
+  65% {
+    opacity: 1;
+    transform: rotate(3deg);
+  }
+
+  85% {
+    opacity: 1;
+    transform: rotate(-3deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(0);
+  }
+}
+
+@keyframes leaf-2 {
+  30% {
+    opacity: 0.5;
+    transform: rotate(-10deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: rotate(3deg);
+  }
+
+  65% {
+    opacity: 1;
+    transform: rotate(-3deg);
+  }
+
+  85% {
+    opacity: 1;
+    transform: rotate(3deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(0);
+  }
+}
+
+@keyframes leaf-green {
+  30% {
+    opacity: 0.5;
+    transform: rotate(10deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: rotate(-3deg);
+  }
+
+  65% {
+    opacity: 1;
+    transform: rotate(3deg);
+  }
+
+  85% {
+    opacity: 1;
+    transform: rotate(-3deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(0);
+  }
+}
+
+@keyframes flamingo {
+  to {
+    opacity: 1;
+    transform: rotate(0) translateY(0);
+  }
+}
+
+@keyframes flamingo-up-down {
+  50% {
+    transform: rotate(3deg) translate(0.5rem, -1rem);
+  }
+
+  100% {
+    transform: rotate(0) translate(0);
+  }
+}
+
+@keyframes showBtn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes showBtnText {
+  to {
+    color: #5f458c;
+  }
+}
+
+@keyframes showInput {
+  to {
+    width: calc(100% - 31rem);
+    padding: 0 5.6rem;
+  }
+}
+
+@keyframes showInputText {
+  to {
+    color: #5f458c;
+  }
+}
