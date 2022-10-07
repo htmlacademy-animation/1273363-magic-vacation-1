@@ -295,7 +295,7 @@
 
 .slider__pagination {
   opacity: 0;
-  animation: showPaginationNums 0.5s ease-out 2s forwards;
+  animation: fadeIn 0.5s ease-out 2s forwards;
 }
 
 .social-block__toggler {
@@ -394,7 +394,7 @@
 
 .result__button {
   opacity: 0;
-  animation: resultBtnShow 1s 1s forwards;
+  animation: fadeIn 1s 1s forwards;
 
   span {
     transform: translateX(5rem) rotate(135deg);
@@ -404,7 +404,7 @@
 
 .disclaimer ul {
   opacity: 0;
-  animation: showFooterText 0.7s forwards;
+  animation: fadeIn 0.7s forwards;
 }
 
 @media (max-width: 1024px) and (orientation: portrait) {
