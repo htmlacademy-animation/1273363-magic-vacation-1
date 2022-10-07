@@ -35,13 +35,27 @@ export default class FullPageScroll {
 
   changePageDisplay() {
     let preloadBg = document.querySelector(`.bg-fill`);
+    function removeStoryClass() {
+      for (let i = 1; i <= 4; i++) {
+        document.querySelector(`body`).classList.remove(`story-slide-${i}`);
+      }
+    }
     if (this.screenElements[this.activeScreen].classList.contains(`screen--prizes`)) {
       preloadBg.classList.add(`active`);
+      removeStoryClass();
       setTimeout(() => {
         this.changeVisibilityDisplay();
         preloadBg.classList.remove(`active`);
       }, 700);
+    } else if ((this.screenElements[this.activeScreen].classList.contains(`screen--story`))) {
+      setTimeout(() => {
+        let indexSlide = document.querySelector(`.swiper-pagination-current`).innerHTML;
+        document.querySelector(`body`).classList.add(`story-slide-${indexSlide}`);
+
+      }, 100);
+      this.changeVisibilityDisplay();
     } else {
+      removeStoryClass();
       this.changeVisibilityDisplay();
     }
     this.changeActiveMenuItem();
