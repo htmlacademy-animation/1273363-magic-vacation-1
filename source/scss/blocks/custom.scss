@@ -424,3 +424,26 @@
     }
   }
 }
+
+@media screen and (min-width: 2000px) {
+  .prizes__item--cases {
+    .prizes__icon {
+      width: 268px;
+    }
+    .prizes__desc {
+      margin-top: 37px;
+    }
+  }
+}
+
+@media screen and (max-width: 2000px) {
+  .prizes__item--cases {
+    .prizes__icon {
+      width: 26.8rem;
+    }
+
+    .prizes__desc {
+      margin-top: 4rem;
+    }
+  }
+}
