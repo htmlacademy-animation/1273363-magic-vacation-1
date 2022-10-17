@@ -2,11 +2,6 @@ export default () => {
   document.addEventListener(`DOMContentLoaded`, function () {
     let bodyDOM = document.querySelector(`body`);
     bodyDOM.classList.add(`show-anim`);
-
-    const path = document.querySelector(`#string3-1`);
-    const pathLength = path.getTotalLength();
-    // eslint-disable-next-line no-console
-    console.log(pathLength);
   });
 };
 
