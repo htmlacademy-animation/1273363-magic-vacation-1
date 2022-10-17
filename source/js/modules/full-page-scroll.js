@@ -1,5 +1,6 @@
 import throttle from 'lodash/throttle';
 import timer from './timer.js';
+import prizes from './prizes.js';
 
 export default class FullPageScroll {
   constructor() {
@@ -48,6 +49,15 @@ export default class FullPageScroll {
         this.changeVisibilityDisplay();
         preloadBg.classList.remove(`active`);
       }, 700);
+      setTimeout(() => {
+        prizes(0);
+      }, 1000);
+      setTimeout(() => {
+        prizes(1);
+      }, 3500);
+      setTimeout(() => {
+        prizes(2);
+      }, 7000);
     } else if ((this.screenElements[this.activeScreen].classList.contains(`screen--story`))) {
       setTimeout(() => {
         let indexSlide = document.querySelector(`.swiper-pagination-current`).innerHTML;
