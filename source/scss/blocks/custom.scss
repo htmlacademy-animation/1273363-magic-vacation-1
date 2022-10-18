@@ -469,3 +469,48 @@
 .game__counter {
   width: 11rem;
 }
+
+.prizes__desc span {
+  transform: translateX(2rem);
+  opacity: 0;
+  transition: opacity 0.3s 1.5s, transform 0.3s 1.6s;
+}
+
+.prizes__desc b {
+  width: 7rem;
+  opacity: 0;
+  transition: opacity 0.3s 1.5s;
+}
+
+.prizes__item {
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  &.active {
+    opacity: 1;
+
+    .prizes__desc b {
+      opacity: 1;
+    }
+
+    .prizes__desc span {
+      opacity: 1;
+      transform: translate(0);
+    }
+  }
+
+  &.prizes__item--codes {
+    .prizes__desc b {
+      width: 20rem;
+    }
+  }
+
+  &.prizes__item--journeys {
+    transform: translateX(128%);
+    transition: opacity 0.3s, transform 0.5s 2s ease-out;
+
+    &.active {
+      transform: translateX(0);
+    }
+  }
+}
