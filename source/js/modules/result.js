@@ -1,4 +1,5 @@
 import WalrusScene from './walrusCanvas.js';
+import CrocodileScene from './crocodileCanvas.js';
 
 export default () => {
   let showResultEls = document.querySelectorAll(`.js-show-result`);
@@ -53,6 +54,11 @@ export default () => {
           }
 
           animTimeOut();
+
+          let crocodileCanvasAnimate = new CrocodileScene({
+            canvas: document.querySelector(`#crocodile-canvas`)
+          });
+          crocodileCanvasAnimate.startAnimation();
         }
       });
     }
