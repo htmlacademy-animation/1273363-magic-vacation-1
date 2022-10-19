@@ -1,3 +1,5 @@
+import WalrusScene from './walrusCanvas.js';
+
 export default () => {
   let showResultEls = document.querySelectorAll(`.js-show-result`);
   let results = document.querySelectorAll(`.screen--result`);
@@ -24,6 +26,10 @@ export default () => {
           for (let j = 0; j < animResult.length; j++) {
             animResult[j].beginElement();
           }
+          let walrusCanvasAnimate = new WalrusScene({
+            canvas: document.querySelector(`#seacalf-canvas`)
+          });
+          walrusCanvasAnimate.startAnimation();
         } else if (target === `result2`) {
           animResult = document.querySelectorAll(`.result2-icon animate`);
           for (let j = 0; j < animResult.length; j++) {
