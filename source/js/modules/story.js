@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import rawShaderMaterial from './rawShaderMaterial';
 
 export default class Story {
   constructor() {
@@ -48,9 +49,7 @@ export default class Story {
 
     loadManager.onLoad = () => {
       loadedTextures.forEach((texture, i) => {
-        const material = new THREE.MeshBasicMaterial({
-          map: texture
-        });
+        const material = new THREE.RawShaderMaterial(rawShaderMaterial(texture));
         const image = new THREE.Mesh(geometry, material);
         image.scale.x = this.textureWidth;
         image.scale.y = this.textureHeight;
@@ -68,7 +67,6 @@ export default class Story {
 
   setScene(i) {
     this.camera.position.x = this.textureWidth * i;
-    console.log(this.camera.position.x);
     this.render();
   }
 
