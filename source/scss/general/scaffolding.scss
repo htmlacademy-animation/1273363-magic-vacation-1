@@ -20,6 +20,10 @@
 
 html {
   box-sizing: border-box;
+
+  &.is-transitioning {
+    pointer-events: none;
+  }
 }
 
 *,

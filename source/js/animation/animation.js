@@ -1,11 +1,11 @@
-import easing from './utilities.js';
+import { easeLinear } from "../helpers/easing";
 
 export default class Animation {
   constructor(options) {
     this.options = options;
 
     if (!this.options.easing) {
-      this.options.easing = easing.easeLinear;
+      this.options.easing = easeLinear;
     }
 
     if (!this.options.duration) {
@@ -35,10 +35,8 @@ export default class Animation {
 
       let animateFrame;
 
-      if (this.options.duration === `infinite`) {
+      if (this.options.duration === "infinite") {
         animateFrame = (currentTime) => {
-          this.requestId = requestAnimationFrame(animateFrame);
-
           const delta = currentTime - this.lastFrameTime;
 
           if (delta > this.interval) {
@@ -46,20 +44,21 @@ export default class Animation {
               startTime: this.startTime,
               currentTime,
               isFinished: false,
-              options
+              options,
             });
 
-            this.lastFrameTime = currentTime - delta % this.interval;
+            this.lastFrameTime = currentTime;
           }
+
+          this.requestId = requestAnimationFrame(animateFrame);
         };
       } else {
         animateFrame = (currentTime) => {
-          this.requestId = requestAnimationFrame(animateFrame);
-
           const delta = currentTime - this.lastFrameTime;
 
           if (delta > this.interval) {
-            let timeFraction = (currentTime - this.startTime) / this.options.duration;
+            let timeFraction =
+              (currentTime - this.startTime) / this.options.duration;
 
             if (timeFraction > 1) {
               timeFraction = 1;
@@ -73,20 +72,24 @@ export default class Animation {
                 startTime: this.startTime,
                 currentTime,
                 isFinished: this.isFinished,
-                options
+                options,
               });
 
-              this.lastFrameTime = currentTime - delta % this.interval;
+              this.lastFrameTime = currentTime;
             }
 
             if (this.isFinished) {
               this.stop();
 
-              if (typeof this.options.callback === `function`) {
+              if (typeof this.options.callback === "function") {
                 this.options.callback();
               }
+
+              return;
             }
           }
+
+          this.requestId = requestAnimationFrame(animateFrame);
         };
       }
 

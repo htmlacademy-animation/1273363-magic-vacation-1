@@ -1,41 +1,53 @@
 import Swiper from "swiper";
-import Story from './story';
+import bodyTheme from "../helpers/body-theme";
+import { plainMeshController } from "../animation/plainMeshController";
 
 export default () => {
   let storySlider;
-  let bodyDOM = document.querySelector(`body`);
-  const story = new Story();
 
   const setSlider = function () {
-    if (((window.innerWidth / window.innerHeight) < 1) || window.innerWidth < 769) {
+    bodyTheme.setAndApplyBodyTheme("dark");
+    plainMeshController.setStoryActiveMesh();
+
+    if (window.innerWidth / window.innerHeight < 1 || window.innerWidth < 769) {
       storySlider = new Swiper(`.js-slider`, {
         pagination: {
           el: `.swiper-pagination`,
-          type: `bullets`
+          type: `bullets`,
         },
         keyboard: {
-          enabled: true
+          enabled: true,
         },
         on: {
           slideChange: () => {
-            if (storySlider.activeIndex === 0 || storySlider.activeIndex === 1) {
-              story.setScene(0);
-            } else if (storySlider.activeIndex === 2 || storySlider.activeIndex === 3) {
-              story.setScene(1);
-            } else if (storySlider.activeIndex === 4 || storySlider.activeIndex === 5) {
-              story.setScene(2);
-              bodyDOM.addClass(`story-slide-3`);
-            } else if (storySlider.activeIndex === 6 || storySlider.activeIndex === 7) {
-              story.setScene(3);
-              bodyDOM.addClass(`story-slide-4`);
+            if (
+              storySlider.activeIndex === 0 ||
+              storySlider.activeIndex === 1
+            ) {
+              plainMeshController.setStoryActiveMesh(0);
+            } else if (
+              storySlider.activeIndex === 2 ||
+              storySlider.activeIndex === 3
+            ) {
+              plainMeshController.setStoryActiveMesh(1);
+            } else if (
+              storySlider.activeIndex === 4 ||
+              storySlider.activeIndex === 5
+            ) {
+              plainMeshController.setStoryActiveMesh(2);
+            } else if (
+              storySlider.activeIndex === 6 ||
+              storySlider.activeIndex === 7
+            ) {
+              plainMeshController.setStoryActiveMesh(3);
             }
           },
           resize: () => {
             storySlider.update();
-          }
+          },
         },
         observer: true,
-        observeParents: true
+        observeParents: true,
       });
     } else {
       storySlider = new Swiper(`.js-slider`, {
@@ -43,43 +55,37 @@ export default () => {
         slidesPerGroup: 2,
         pagination: {
           el: `.swiper-pagination`,
-          type: `fraction`
+          type: `fraction`,
         },
         navigation: {
           nextEl: `.js-control-next`,
           prevEl: `.js-control-prev`,
         },
         keyboard: {
-          enabled: true
+          enabled: true,
         },
         on: {
           slideChange: () => {
-            for (let i = 1; i <= 4; i++) {
-              if (storySlider.activeIndex === 0) {
-                story.setScene(0);
-                bodyDOM.classList.remove(`story-slide-${i}`);
-                bodyDOM.classList.add(`story-slide-1`);
-              } else if (storySlider.activeIndex === 2) {
-                story.setScene(1);
-                bodyDOM.classList.remove(`story-slide-${i}`);
-                bodyDOM.classList.add(`story-slide-2`);
-              } else if (storySlider.activeIndex === 4) {
-                story.setScene(2);
-                bodyDOM.classList.remove(`story-slide-${i}`);
-                bodyDOM.classList.add(`story-slide-3`);
-              } else if (storySlider.activeIndex === 6) {
-                story.setScene(3);
-                bodyDOM.classList.remove(`story-slide-${i}`);
-                bodyDOM.classList.add(`story-slide-4`);
-              }
+            if (storySlider.activeIndex === 0) {
+              bodyTheme.setAndApplyBodyTheme("purple");
+              plainMeshController.setStoryActiveMesh(0);
+            } else if (storySlider.activeIndex === 2) {
+              bodyTheme.setAndApplyBodyTheme("blue");
+              plainMeshController.setStoryActiveMesh(1);
+            } else if (storySlider.activeIndex === 4) {
+              bodyTheme.setAndApplyBodyTheme("light-blue");
+              plainMeshController.setStoryActiveMesh(2);
+            } else if (storySlider.activeIndex === 6) {
+              bodyTheme.setAndApplyBodyTheme("dark");
+              plainMeshController.setStoryActiveMesh(3);
             }
           },
           resize: () => {
             storySlider.update();
-          }
+          },
         },
         observer: true,
-        observeParents: true
+        observeParents: true,
       });
     }
   };
@@ -92,11 +98,4 @@ export default () => {
   });
 
   setSlider();
-
-  document.body.addEventListener(`screenChanged`, (e) => {
-    if (e.detail.screenName === `story`) {
-      story.init();
-      story.setScene(0);
-    }
-  });
 };

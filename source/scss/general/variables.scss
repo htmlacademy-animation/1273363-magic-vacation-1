@@ -1,6 +1,8 @@
 $c-light: #ffffff;
 $c-dark: #5f458c;
 $c-purple: #a67ee5;
+$c-blue: #3f72ee;
+$c-light-blue: #90B8E2;
 
 $font: "Proxima Nova", "Arial", sans-serif;
 $font-alt: "Radical",  "Arial", sans-serif;
@@ -19,3 +21,6 @@ $retina-dpi: 144dpi;
 $retina-dppx: 1.5dppx;
 
 $index: 1.38871;
+
+$custom-timing-function: cubic-bezier(.06,.7,.52,1);
+$bounce-timing-function: cubic-bezier(.35,1.1,.48,1.19);

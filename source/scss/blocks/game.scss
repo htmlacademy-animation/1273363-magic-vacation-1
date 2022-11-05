@@ -47,7 +47,7 @@
   font-family: $font-alt;
   font-weight: 400;
   font-size: 4.8rem;
-  line-height: 1;
+  line-height: 0.906;
   letter-spacing: -0.04em;
 
   @media (min-width: $stop-scaling) {
@@ -78,6 +78,8 @@
   font-size: 4.8rem;
   line-height: 0.906;
   letter-spacing: 0;
+  width: 11rem;
+  text-align: left;
 
   @media (min-width: $stop-scaling) {
     font-size: 48px;
@@ -90,6 +92,7 @@
   @media (max-width: $tablet) and (orientation: portrait) {
     margin-bottom: 1.8rem;
     font-size: 3.6rem;
+    width: 7rem;
   }
 
   @media (max-width: $tablet) and (orientation: landscape) {
@@ -114,7 +117,8 @@
   left: 0;
   z-index: 100;
   opacity: 0.5;
-  display: none;
+  // TODO: временно разблокированы кнопки для проверки анимации
+  // display: none;
 }
 
 .game__button {

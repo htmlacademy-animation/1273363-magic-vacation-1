@@ -4,6 +4,7 @@
 @import "general/mixins.scss";
 @import "general/fonts.scss";
 @import "general/scaffolding.scss";
+@import "general/animations.scss";
 
 // Blocks
 @import "blocks/animation-screen.scss";
@@ -20,5 +21,6 @@
 @import "blocks/screen.scss";
 @import "blocks/slider.scss";
 @import "blocks/social-block.scss";
-@import "blocks/animation.scss";
-@import "blocks/custom.scss";
+@import "blocks/transition.scss";
+@import "blocks/accent-text.scss";
+@import "blocks/svg.scss";
