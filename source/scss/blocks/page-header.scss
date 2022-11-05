@@ -38,7 +38,7 @@
 
   transform: translateX(-2rem);
   opacity: 0;
-  transition: transform .7s $custom-timing-function, opacity .7s $custom-timing-function;
+  transition: transform 0.7s $custom-timing-function, opacity 0.7s $custom-timing-function;
 
   body.loaded & {
     transform: translateX(0);
@@ -193,7 +193,7 @@
   text-transform: uppercase;
   font-weight: 400;
   font-size: 1.2rem;
-  line-height: 1.0418;
+  line-height: 1;
   color: $c-light;
 
   @media (min-width: $stop-scaling) {

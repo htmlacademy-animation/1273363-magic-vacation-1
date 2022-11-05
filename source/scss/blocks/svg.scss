@@ -58,10 +58,12 @@ svg.svg__lose-word > g {
     transform: translate(0, 0);
     animation-timing-function: cubic-bezier(0.88, 0, 1, 1);
   }
+
   67% {
     transform: translate(0, 99px);
     animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
   }
+
   83% {
     transform: translate(0, 94px);
     animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1);

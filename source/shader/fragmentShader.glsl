@@ -21,7 +21,6 @@ vec3 applyHue(vec3 aColor, float aHue) {
     float angle = radians(aHue);
     vec3 k = vec3(0.57735, 0.57735, 0.57735);
     float cosAngle = cos(angle);
-    //Rodrigues' rotation formula
     return aColor * cosAngle + k * aColor * sin(angle) + k * dot(k, aColor) * (1.0 - cosAngle);
 }
 
@@ -37,7 +36,6 @@ void drawBubble(inout vec4 outputColor, in Bubble bubble) {
         return;
     }
 
-    // подкрашиваем контуры пузырька
     if (distanceFromCurrentPixelToBubblePosition >= bubble.bubbleRadius - BUBBLE_LINE_WIDTH) {
         float gray = 0.8;
         outputColor.rgb = vec3(gray, gray, gray);
@@ -58,8 +56,6 @@ void main() {
         drawBubble(outputColor, bubble3);
     }
 
-    // исходники тут
-    // @see: https://forum.unity.com/threads/hue-saturation-brightness-contrast-shader.260649/
     outputColor.rgb = applyHue(outputColor.rgb, delta);
 
     gl_FragColor = outputColor;

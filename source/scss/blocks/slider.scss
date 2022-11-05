@@ -71,7 +71,7 @@
   font-family: $font-alt;
   font-weight: 400;
   font-size: 4.8rem;
-  line-height: 0.906;
+  line-height: 1;
   letter-spacing: -0.04em;
 
   @media (min-width: $stop-scaling) {
@@ -160,7 +160,7 @@
 }
 
 .slider__control {
-  --duration: .5s;
+  --duration: 0.5s;
   --timing-function: ease-in-out;
 
   @include btn-reset;
