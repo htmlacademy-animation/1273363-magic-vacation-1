@@ -1,0 +1,17 @@
+.accent-text {
+  &__word {
+    display: inline-block;
+    padding-top: 2.5rem;
+    margin-right: 5px;
+    overflow: hidden;
+
+    & > span {
+      transform: translate3d(0, 1.5em, 0);
+      display: inline-block;
+    }
+  }
+
+  .screen.active &.active > &__word > span {
+    transform: translate3d(0, 0, 0);
+  }
+}

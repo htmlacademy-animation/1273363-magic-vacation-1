@@ -97,8 +97,15 @@
   font-size: 1.8rem;
   line-height: 2rem;
 
-  transform: translateX(2.5rem);
-  opacity: 0;
+  .swiper-slide-active & {
+    animation: fadeInRight 0.5s ease 0.3s both;
+  }
+
+  @media (min-width: $mobile) {
+    .swiper-slide-next & {
+      animation: fadeInRight 0.5s ease 0.6s both;
+    }
+  }
 
   @media (min-width: $stop-scaling) {
     margin-top: 36px;
@@ -128,19 +135,6 @@
   }
 }
 
-
-.slider__item.swiper-slide-active .slider__item-text {
-  opacity: 1;
-  transform: translateX(0);
-  transition: all 0.5s ease-out 1s;
-}
-
-.slider__item.swiper-slide-next .slider__item-text {
-  opacity: 1;
-  transform: translateX(0);
-  transition: all 0.5s ease-out 1.5s;
-}
-
 .slider__controls {
   position: absolute;
   bottom: 2.8rem;
@@ -166,15 +160,55 @@
 }
 
 .slider__control {
+  --duration: 0.5s;
+  --timing-function: ease-in-out;
+
   @include btn-reset;
   position: relative;
   width: 4rem;
   height: 4rem;
   color: $c-dark;
+  opacity: 0;
+  transition: opacity var(--duration) var(--timing-function);
+  will-change: opacity;
+
+  body.blue & {
+    color: $c-light-blue;
+  }
+
+  body.light-blue & {
+    color: $c-blue;
+  }
+
+  body.purple & {
+    color: $c-dark;
+  }
 
   @media (min-width: $stop-scaling) {
     width: 40px;
     height: 40px;
+  }
+
+  .screen--story.active & {
+    &.slider__control--prev {
+      animation: rotateSlideLeftToRight var(--duration) var(--timing-function)
+        forwards;
+    }
+
+    &.slider__control--next {
+      animation: rotateSlideRightToLeft var(--duration) var(--timing-function)
+        forwards;
+    }
+
+    &.slider__control--prev,
+    &.slider__control--next {
+      opacity: 1;
+
+      &.swiper-button-disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+    }
   }
 
   &::before {
@@ -214,8 +248,20 @@
     color: $c-purple;
     outline: none;
 
+    body.blue & {
+      color: $c-light-blue;
+    }
+
+    body.light-blue & {
+      color: $c-blue;
+    }
+
+    body.purple & {
+      color: $c-dark;
+    }
+
     &::before {
-      border-color: $c-purple;
+      border-color: currentColor;
     }
   }
 
@@ -223,17 +269,47 @@
   &:active:focus {
     color: $c-light;
 
+    body.blue & {
+      color: $c-light;
+    }
+
+    body.light-blue & {
+      color: $c-light;
+    }
+
+    body.purple & {
+      color: $c-light;
+    }
+
     &::before {
       width: 100%;
       height: 100%;
       background-color: $c-purple;
       border-color: $c-purple;
-    }
-  }
 
-  &.swiper-button-disabled {
-    opacity: 0.5;
-    pointer-events: none;
+      body.blue & {
+        background-color: $c-light-blue;
+        border-color: $c-light-blue;
+      }
+
+      body.light-blue & {
+        background-color: $c-blue;
+        border-color: $c-blue;
+      }
+
+      body.purple & {
+        background-color: $c-dark;
+        border-color: $c-dark;
+      }
+
+      body.light-blue & {
+        color: $c-blue;
+      }
+
+      body.purple & {
+        color: $c-dark;
+      }
+    }
   }
 }
 

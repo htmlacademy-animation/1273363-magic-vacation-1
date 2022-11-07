@@ -5,7 +5,8 @@ env:
   browser: true
 
 extends:
-  htmlacademy/es6
+  - htmlacademy/es6
+  - prettier
 
 parserOptions:
   ecmaVersion: 2018
