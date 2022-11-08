@@ -74,7 +74,7 @@ export const plainMeshController = {
     return new THREE.RawShaderMaterial({
       uniforms: {
         map: new THREE.Uniform(texture),
-        delta: new THREE.Uniform(0),
+        timestamp: new THREE.Uniform(0),
         bubble1: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, 0),
           bubbleRadius: 0.07,
@@ -105,7 +105,7 @@ export const plainMeshController = {
 
     if (index === 1) {
       const transformationCallback = (timestamp) => {
-        mesh.material.uniforms.delta.value = Math.cos(timestamp / 1000) * 20;
+        mesh.material.uniforms.timestamp.value = timestamp;
         mesh.material.uniforms.hasBubbles.value = true;
 
         const bubble1position =
