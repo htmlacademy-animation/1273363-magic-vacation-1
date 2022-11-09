@@ -3,7 +3,7 @@ precision mediump float;
 #define PI 3.1415
 
 uniform sampler2D map;
-uniform float delta;
+uniform float timestamp;
 
 struct Bubble {
     vec2 bubblePosition;
@@ -19,9 +19,24 @@ uniform float bubbleRadius;
 
 varying vec2 vUv;
 
-vec3 applyHue(vec3 aColor, float aHue) {
-    float angle = radians(aHue);
-    vec3 k = vec3(0.57735, 0.57735, 0.57735);
+vec3 applyHue(vec3 aColor) {
+    float duration = 2.0;
+
+    float currentTimePosition = mod(timestamp / 1000.0, duration);
+    float currentHueDegrees = 0.0;
+
+    if (currentTimePosition < 0.3) {
+        currentHueDegrees = (1.0 - cos((currentTimePosition / 0.3) * PI)) * 8.0;
+    } else if (currentTimePosition < 0.6) {
+        currentHueDegrees = (1.0 - cos(((currentTimePosition) / 0.3) * PI)) * 6.0 + 2.0;
+    } else if (currentTimePosition < 1.0) {
+        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * PI)) * 8.0 + 2.0;
+    } else if (currentTimePosition < 1.4) {
+        currentHueDegrees = (1.0 - cos(((currentTimePosition - 0.6) / 0.4) * PI)) * 10.0;
+    }
+
+    float angle = radians(currentHueDegrees);
+    vec3 k = vec3(0.57735);
     float cosAngle = cos(angle);
     return aColor * cosAngle + k * aColor * sin(angle) + k * dot(k, aColor) * (1.0 - cosAngle);
 }
@@ -77,7 +92,7 @@ void main() {
         drawBubble(outputColor, bubble3);
     }
 
-    outputColor.rgb = applyHue(outputColor.rgb, delta);
+    outputColor.rgb = applyHue(outputColor.rgb);
 
     gl_FragColor = outputColor;
 }
