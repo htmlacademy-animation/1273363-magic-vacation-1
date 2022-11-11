@@ -3,6 +3,8 @@ import bodyTheme from "../helpers/body-theme";
 import { game } from "./game";
 import { prizesAnimation } from "./prizesAnimation";
 import { plainMeshController } from "../animation/plainMeshController";
+import {scene} from "../animation/initAnimationScreen";
+import {circleController} from "../animation/circleController";
 
 export default class FullPageScroll {
   constructor() {
@@ -71,10 +73,10 @@ export default class FullPageScroll {
     const prevActiveScreen = document.querySelector(`.screen.active`);
     const nextActiveScreen = this.screenElements[this.activeScreen];
 
-    plainMeshController.clearScene();
+    scene.clearScene();
 
     if (nextActiveScreen.classList.contains(`screen--intro`)) {
-      plainMeshController.addScreenMesh("intro");
+      circleController.addScreenMesh();
     } else if (nextActiveScreen.classList.contains(`screen--story`)) {
       plainMeshController.addScreenMesh("story").then(() => {
         plainMeshController.setStoryActiveMesh();
