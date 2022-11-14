@@ -9,7 +9,7 @@ export const sceneController = {
     scene.clearScene();
   },
 
-  addScreenMesh() {
+  async addScreenMesh() {
     //scene.addSceneObject(new SceneWithLantern());
 
     const svgShapeLoader = new SvgPathLoader(SVG_FORMS);
