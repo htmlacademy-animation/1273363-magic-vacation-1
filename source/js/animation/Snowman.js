@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import {Mesh} from "three";
 import {degreesToRadians} from "../utils/degreesToRadians";
 
 export class Snowman extends THREE.Group {
@@ -16,7 +15,7 @@ export class Snowman extends THREE.Group {
   }
 
   addBottomSphere() {
-    const mesh = new Mesh(
+    const mesh = new THREE.Mesh(
       new THREE.SphereGeometry(75, 32, 16),
       this.defaultMaterial
     );
@@ -27,12 +26,12 @@ export class Snowman extends THREE.Group {
   }
 
   addTopSphereWithCone() {
-    const topSphereMesh = new Mesh(
+    const topSphereMesh = new THREE.Mesh(
       new THREE.SphereGeometry(44, 32, 16),
       this.defaultMaterial
     );
 
-    const coneMesh = new Mesh(
+    const coneMesh = new THREE.Mesh(
       new THREE.ConeGeometry(18, 75, 32),
       this.defaultMaterial
     );
