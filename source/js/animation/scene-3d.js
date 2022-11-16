@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 export class Scene3d {
   constructor(config = {}) {
@@ -16,7 +16,7 @@ export class Scene3d {
     window.addEventListener("resize", this.onWindowResize.bind(this));
     this.animate = this.animate.bind(this);
 
-    this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+    this.controls = new OrbitControls( this.camera, this.renderer.domElement);
 
     this.render();
 
@@ -28,8 +28,8 @@ export class Scene3d {
   initScene() {
     this.scene = new THREE.Scene();
 
-    const axesHelper = new THREE.AxesHelper( 1000 );
-    this.scene.add( axesHelper );
+    const axesHelper = new THREE.AxesHelper(1000);
+    this.scene.add(axesHelper);
   }
 
   initCamera(cameraConfig = {}) {
@@ -77,17 +77,16 @@ export class Scene3d {
     const light2 = new THREE.PointLight(
       new THREE.Color("rgb(246,242,255)"),
       0.6,
-      975,
+      2500,
       2
     );
 
     light2.position.set(-785, -350, -710);
 
-    // Light 3
     const light3 = new THREE.PointLight(
       new THREE.Color("rgb(245,254,255)"),
       0.95,
-      975,
+      2500,
       2
     );
 

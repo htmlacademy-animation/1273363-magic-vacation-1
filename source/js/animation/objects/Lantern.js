@@ -1,10 +1,11 @@
 import * as THREE from "three";
+import {MaterialCreator} from '../MaterialCreator';
 
 export class Lantern extends THREE.Group {
-  constructor(defaultMaterial) {
+  constructor(materialCreator) {
     super();
 
-    this.defaultMaterial = defaultMaterial;
+    this.materialCreator = materialCreator;
     this.constructChildren();
   }
 
@@ -18,7 +19,7 @@ export class Lantern extends THREE.Group {
     const height = 230;
     const geometry = new THREE.CylinderGeometry(7, 7, height, 40);
 
-    const cylinder = new THREE.Mesh(geometry, this.defaultMaterial);
+    const cylinder = new THREE.Mesh(geometry, this.materialCreator.create('SoftMaterial',{color: MaterialCreator.Colors.Blue}));
 
     cylinder.position.set(0, height / 2 + 120, 0);
 
@@ -30,14 +31,14 @@ export class Lantern extends THREE.Group {
 
     let mesh = new THREE.Mesh(
       new THREE.BoxGeometry(37, 4, 37),
-      this.defaultMaterial
+      this.materialCreator.create('SoftMaterial',{color: MaterialCreator.Colors.Blue})
     );
 
     light.add(mesh);
 
     mesh = new THREE.Mesh(
       this.getTruncatedPyramidGeometry(42, 32, 60),
-      this.defaultMaterial
+      this.materialCreator.create('SoftMaterial',{color: MaterialCreator.Colors.LightBlue})
     );
 
     mesh.position.set(0, 32, 0);
@@ -46,7 +47,7 @@ export class Lantern extends THREE.Group {
 
     mesh = new THREE.Mesh(
       this.getTruncatedPyramidGeometry(45, 57, 6),
-      this.defaultMaterial
+      this.materialCreator.create('SoftMaterial',{color: MaterialCreator.Colors.Blue})
     );
 
     mesh.position.set(0, 70, 0);
@@ -61,11 +62,11 @@ export class Lantern extends THREE.Group {
   addFooting() {
     const geometry = new THREE.CylinderGeometry(16, 16, 120, 40);
 
-    const cylinder = new THREE.Mesh(geometry, this.defaultMaterial);
+    const cylinder = new THREE.Mesh(geometry, this.materialCreator.create('SoftMaterial',{color: MaterialCreator.Colors.Blue}));
 
     const sphere = new THREE.Mesh(
       new THREE.SphereGeometry(16, 32, 32),
-      this.defaultMaterial
+      this.materialCreator.create('SoftMaterial',{color: MaterialCreator.Colors.Blue})
     );
 
     sphere.position.set(0, 60, 0);
