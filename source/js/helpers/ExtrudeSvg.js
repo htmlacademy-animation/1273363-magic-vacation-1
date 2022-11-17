@@ -7,17 +7,19 @@ export class ExtrudeSvgFactory {
   }
 
   async createAndAddToTheScene(name, settings = {}) {
-    const currentSettings = {...this.settings, settings}
+    const currentSettings = {...this.settings, ...settings};
 
     const group = new THREE.Group();
 
     const paths = await this.svgShapeLoader.getSvgShape(name);
 
     for (const path of paths) {
-      const material = new THREE.MeshStandardMaterial({
-        color: path.color,
-        side: THREE.DoubleSide,
-      });
+      const material =
+        currentSettings.material ||
+        new THREE.MeshStandardMaterial({
+          color: path.color,
+          side: THREE.DoubleSide,
+        });
 
       const shapes = path.toShapes();
 

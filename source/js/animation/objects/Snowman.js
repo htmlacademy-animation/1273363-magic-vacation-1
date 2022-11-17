@@ -1,11 +1,12 @@
 import * as THREE from "three";
-import {degreesToRadians} from "../utils/degreesToRadians";
+import {degreesToRadians} from "../../utils/degreesToRadians";
+import {MaterialCreator} from '../MaterialCreator';
 
 export class Snowman extends THREE.Group {
-  constructor(defaultMaterial) {
+  constructor(materialCreator) {
     super();
 
-    this.defaultMaterial = defaultMaterial;
+    this.materialCreator = materialCreator;
     this.constructChildren();
   }
 
@@ -17,7 +18,9 @@ export class Snowman extends THREE.Group {
   addBottomSphere() {
     const mesh = new THREE.Mesh(
       new THREE.SphereGeometry(75, 32, 16),
-      this.defaultMaterial
+      this.materialCreator.create("StrongMaterial", {
+        color: MaterialCreator.Colors.SnowColor,
+      })
     );
 
     mesh.position.set(0, 75 - 10, 0);
@@ -28,12 +31,16 @@ export class Snowman extends THREE.Group {
   addTopSphereWithCone() {
     const topSphereMesh = new THREE.Mesh(
       new THREE.SphereGeometry(44, 32, 16),
-      this.defaultMaterial
+      this.materialCreator.create("StrongMaterial", {
+        color: MaterialCreator.Colors.SnowColor,
+      })
     );
 
     const coneMesh = new THREE.Mesh(
       new THREE.ConeGeometry(18, 75, 32),
-      this.defaultMaterial
+      this.materialCreator.create("SoftMaterial", {
+        color: MaterialCreator.Colors.Orange,
+      })
     );
 
     coneMesh.rotateX(degreesToRadians(90));

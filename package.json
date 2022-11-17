@@ -4,6 +4,7 @@
   "description": "Личный проект «Таинственный отпуск» от HTML Academy",
   "devDependencies": {
     "@htmlacademy/editorconfig-cli": "1.x",
+    "@types/dat.gui": "^0.7.7",
     "copy-webpack-plugin": "5.1.1",
     "css-loader": "3.5.1",
     "csso-webpack-plugin": "2.0.0-beta.1",
@@ -57,6 +58,7 @@
     "source/sass/**/*.{sass,scss}"
   ],
   "dependencies": {
+    "dat.gui": "^0.7.9",
     "normalize.css": "8.0.1",
     "swiper": "5.3.8",
     "three": "0.115.0"
