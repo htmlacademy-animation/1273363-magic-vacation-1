@@ -9,6 +9,7 @@ import {MainPageComposition} from "./objects/MainPageComposition";
 
 const gui = new GUI();
 const materialCreator = new MaterialCreator(scene, gui);
+const latheGeometryCreator = new LatheGeometryCreator(materialCreator);
 
 scene.addSceneObject(gui);
 
@@ -18,11 +19,12 @@ export const sceneController = {
   },
 
   addRoadAndCarpet() {
-    const road = new LatheGeometryCreator().createRoad();
+    const road = latheGeometryCreator.createRoad();
+    const carpet = latheGeometryCreator.createCarpet();
     road.position.set(0, 100, 0);
 
     scene.addSceneObject(road);
-    scene.addSceneObject(new LatheGeometryCreator().createCarpet());
+    scene.addSceneObject(carpet);
   },
 
   addSaturn() {
@@ -109,15 +111,15 @@ export const sceneController = {
   },
 
   addScreenMesh() {
-    this.addSceneWithLantern();
+    // this.addSceneWithLantern();
 
-    this.addSpheres();
+    // this.addSpheres();
 
-    this.addSaturn();
-    this.addDarkSaturn();
+    // this.addSaturn();
+    // this.addDarkSaturn();
 
-    this.addMainPageComposition();
+    // this.addMainPageComposition();
 
-    // this.addRoadAndCarpet();
+    this.addRoadAndCarpet();
   },
 };
