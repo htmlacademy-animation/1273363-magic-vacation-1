@@ -1,12 +1,12 @@
 import * as THREE from "three";
 
-export class ExtrudeSvgFactory {
+export class ExtrudeSvgCreator {
   constructor(svgShapeLoader, settings) {
     this.svgShapeLoader = svgShapeLoader;
     this.settings = settings;
   }
 
-  async createAndAddToTheScene(name, settings = {}) {
+  async create(name, settings = {}) {
     const currentSettings = {...this.settings, ...settings};
 
     const group = new THREE.Group();

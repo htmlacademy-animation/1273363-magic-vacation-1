@@ -1,20 +1,13 @@
 import * as THREE from "three";
-import {SvgPathLoader} from "../../helpers/SvgPathLoader";
-import {EXTRUDE_SETTINGS, SVG_FORMS} from "../../constants";
-import {ExtrudeSvgFactory} from "../../helpers/ExtrudeSvg";
+import {SVG_FORMS} from "../../constants";
 import {degreesToRadians} from "../../utils/degreesToRadians";
 import {MaterialCreator} from "../MaterialCreator";
 
-const svgShapeLoader = new SvgPathLoader(SVG_FORMS);
-
 export class MainPageComposition extends THREE.Group {
-  constructor(materialCreator) {
+  constructor(materialCreator, extrudeSvgCreator) {
     super();
 
-    this.extrudeSvgFactory = new ExtrudeSvgFactory(
-      svgShapeLoader,
-      EXTRUDE_SETTINGS
-    );
+    this.extrudeSvgCreator = extrudeSvgCreator;
     this.materialCreator = materialCreator;
     this.constructChildren();
   }
@@ -25,7 +18,7 @@ export class MainPageComposition extends THREE.Group {
   }
 
   async addKeyHoleBackground() {
-    const keyholeMesh = await this.extrudeSvgFactory.createAndAddToTheScene(
+    const keyholeMesh = await this.extrudeSvgCreator.create(
       SVG_FORMS.keyhole,
       { depth: 4, bevelThickness: 2, bevelSize: 2 }
     );
@@ -46,7 +39,7 @@ export class MainPageComposition extends THREE.Group {
   }
 
   async addExtrudedSvg() {
-    const flamingoMesh = await this.extrudeSvgFactory.createAndAddToTheScene(
+    const flamingoMesh = await this.extrudeSvgCreator.create(
       SVG_FORMS.flamingo,
       {
         depth: 8,
@@ -57,7 +50,7 @@ export class MainPageComposition extends THREE.Group {
         }),
       }
     );
-    const snowflakeMesh = await this.extrudeSvgFactory.createAndAddToTheScene(
+    const snowflakeMesh = await this.extrudeSvgCreator.create(
       SVG_FORMS.snowflake,
       {
         depth: 8,
@@ -68,7 +61,7 @@ export class MainPageComposition extends THREE.Group {
         }),
       }
     );
-    const questionMesh = await this.extrudeSvgFactory.createAndAddToTheScene(
+    const questionMesh = await this.extrudeSvgCreator.create(
       SVG_FORMS.question,
       {
         depth: 8,
@@ -79,7 +72,7 @@ export class MainPageComposition extends THREE.Group {
         }),
       }
     );
-    const leafMesh = await this.extrudeSvgFactory.createAndAddToTheScene(
+    const leafMesh = await this.extrudeSvgCreator.create(
       SVG_FORMS.leaf,
       {
         depth: 8,
@@ -91,7 +84,7 @@ export class MainPageComposition extends THREE.Group {
       }
     );
 
-    const flowerMesh = await this.extrudeSvgFactory.createAndAddToTheScene(
+    const flowerMesh = await this.extrudeSvgCreator.create(
       SVG_FORMS.flower,
       {
         depth: 4,
