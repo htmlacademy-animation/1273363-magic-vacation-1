@@ -4,26 +4,22 @@ import {LatheGeometryCreator} from "./LatheGeometryCreator";
 import {Saturn} from "./objects/Saturn";
 import {MaterialCreator} from "./MaterialCreator";
 import * as THREE from "three";
-import {GUI} from "dat.gui";
 import {MainPageComposition} from "./objects/MainPageComposition";
 import {Road} from "./objects/Road";
 import {Carpet} from "./objects/Carpet";
 import {SvgPathLoader} from "../helpers/SvgPathLoader";
-import {EXTRUDE_SETTINGS, SVG_FORMS} from "../constants";
+import {EXTRUDE_SETTINGS, MATERIAL_TYPE, SVG_ELEMENTS} from "../constants";
 import {ExtrudeSvgCreator} from "../helpers/ExtrudeSvgCreator";
-import {ObjectsCreator} from '../helpers/ObjectCreator';
+import {ObjectsCreator} from "../helpers/ObjectCreator";
 
-const gui = new GUI();
-const materialCreator = new MaterialCreator(scene, gui);
+const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
-const svgShapeLoader = new SvgPathLoader(SVG_FORMS);
+const svgShapeLoader = new SvgPathLoader(SVG_ELEMENTS);
 const extrudeSvgCreator = new ExtrudeSvgCreator(
   svgShapeLoader,
   EXTRUDE_SETTINGS
 );
 const objectCreator = new ObjectsCreator(materialCreator);
-
-scene.addSceneObject(gui);
 
 export const sceneController = {
   clearScene() {
@@ -74,27 +70,27 @@ export const sceneController = {
     sphere5.position.set(330, 110, 0);
     sphere6.position.set(330, -110, 0);
 
-    sphere1.material = materialCreator.create("SoftMaterial", {
+    sphere1.material = materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
       color: MaterialCreator.Colors.Blue,
     });
 
-    sphere2.material = materialCreator.create("SoftMaterial", {
+    sphere2.material = materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
       color: MaterialCreator.Colors.DarkBlue,
     });
 
-    sphere3.material = materialCreator.create("BasicMaterial", {
+    sphere3.material = materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
       color: MaterialCreator.Colors.Blue,
     });
 
-    sphere4.material = materialCreator.create("BasicMaterial", {
+    sphere4.material = materialCreator.create(MATERIAL_TYPE.BasicMaterial, {
       color: MaterialCreator.Colors.DarkBlue,
     });
 
-    sphere5.material = materialCreator.create("StrongMaterial", {
+    sphere5.material = materialCreator.create(MATERIAL_TYPE.StrongMaterial, {
       color: MaterialCreator.Colors.Blue,
     });
 
-    sphere6.material = materialCreator.create("StrongMaterial", {
+    sphere6.material = materialCreator.create(MATERIAL_TYPE.StrongMaterial, {
       color: MaterialCreator.Colors.DarkBlue,
     });
 
@@ -113,36 +109,15 @@ export const sceneController = {
   addMainPageComposition() {
     const mainPageComposition = new MainPageComposition(
       materialCreator,
-      extrudeSvgCreator
+      extrudeSvgCreator,
+      objectCreator
     );
-
-    mainPageComposition.position.set(0, 0, -400);
 
     scene.addSceneObject(mainPageComposition);
   },
 
   addSceneWithLantern() {
     scene.addSceneObject(new SceneWithLantern(materialCreator));
-  },
-
-  addAeroplane() {
-    objectCreator.create('airplane', (mesh)=> {
-      scene.addSceneObject(mesh);
-    })
-  },
-
-  addWatermelon() {
-    objectCreator.create('watermelon', (mesh)=> {
-      mesh.position.set(0, 100, 0);
-      scene.addSceneObject(mesh);
-    })
-  },
-
-  addSuitcase() {
-    objectCreator.create('suitcase', (mesh)=> {
-      mesh.position.set(200, 0, 0);
-      scene.addSceneObject(mesh);
-    })
   },
 
   addScreenMesh() {
@@ -153,14 +128,8 @@ export const sceneController = {
     // this.addSaturn();
     // this.addDarkSaturn();
 
-    // this.addMainPageComposition();
+    this.addMainPageComposition();
 
     //this.addRoadAndCarpet();
-
-    this.addAeroplane();
-
-    this.addWatermelon();
-
-    this.addSuitcase();
   },
 };

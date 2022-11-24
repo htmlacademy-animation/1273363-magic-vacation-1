@@ -6,7 +6,7 @@ export class ExtrudeSvgCreator {
     this.settings = settings;
   }
 
-  async create(name, settings = {}) {
+  async create(name, settings = {}, onLoad) {
     const currentSettings = {...this.settings, ...settings};
 
     const group = new THREE.Group();
@@ -31,6 +31,6 @@ export class ExtrudeSvgCreator {
       }
     }
 
-    return group;
+    onLoad(group);
   }
 }

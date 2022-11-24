@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import {degreesToRadians} from "../../utils/degreesToRadians";
 import {MaterialCreator} from '../MaterialCreator';
+import {MATERIAL_TYPE} from "../../constants";
 
 export class Snowman extends THREE.Group {
   constructor(materialCreator) {
@@ -18,7 +19,7 @@ export class Snowman extends THREE.Group {
   addBottomSphere() {
     const mesh = new THREE.Mesh(
       new THREE.SphereGeometry(75, 32, 16),
-      this.materialCreator.create("StrongMaterial", {
+      this.materialCreator.create(MATERIAL_TYPE.StrongMaterial, {
         color: MaterialCreator.Colors.SnowColor,
       })
     );
@@ -31,14 +32,14 @@ export class Snowman extends THREE.Group {
   addTopSphereWithCone() {
     const topSphereMesh = new THREE.Mesh(
       new THREE.SphereGeometry(44, 32, 16),
-      this.materialCreator.create("StrongMaterial", {
+      this.materialCreator.create(MATERIAL_TYPE.StrongMaterial, {
         color: MaterialCreator.Colors.SnowColor,
       })
     );
 
     const coneMesh = new THREE.Mesh(
       new THREE.ConeGeometry(18, 75, 32),
-      this.materialCreator.create("SoftMaterial", {
+      this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
         color: MaterialCreator.Colors.Orange,
       })
     );

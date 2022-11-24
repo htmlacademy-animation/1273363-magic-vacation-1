@@ -2,6 +2,7 @@ import * as THREE from "three";
 import {LatheGeometryCreator} from "../LatheGeometryCreator";
 import {degreesToRadians} from "../../utils/degreesToRadians";
 import {MaterialCreator} from "../MaterialCreator";
+import {MATERIAL_TYPE} from "../../constants";
 
 export class Saturn extends THREE.Group {
   constructor(materialCreator, options) {
@@ -13,10 +14,13 @@ export class Saturn extends THREE.Group {
   }
 
   constructChildren() {
-    this.addRope();
     this.addPlanet();
-    this.addSmallSphere();
     this.addRing();
+
+    if (this.options.withRope) {
+      this.addRope();
+      this.addSmallSphere();
+    }
   }
 
   addRope() {
@@ -24,7 +28,7 @@ export class Saturn extends THREE.Group {
 
     const cylinder = new THREE.Mesh(
       geometry,
-      this.materialCreator.create("SoftMaterial", {
+      this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
         color: MaterialCreator.Colors.MetalGrey,
       })
     );
@@ -40,7 +44,7 @@ export class Saturn extends THREE.Group {
     this.add(
       new THREE.Mesh(
         geometry,
-        this.materialCreator.create("SoftMaterial", {
+        this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
           color: this.options.darkMode
             ? MaterialCreator.Colors.ShadowedDominantRed
             : MaterialCreator.Colors.DominantRed,
@@ -54,7 +58,7 @@ export class Saturn extends THREE.Group {
 
     const sphere = new THREE.Mesh(
       geometry,
-      this.materialCreator.create("SoftMaterial", {
+      this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
         color: this.options.darkMode
           ? MaterialCreator.Colors.ShadowedBrightPurple
           : MaterialCreator.Colors.BrightPurple,
@@ -71,7 +75,7 @@ export class Saturn extends THREE.Group {
 
     const ring = new THREE.Mesh(
       geometry,
-      this.materialCreator.create("SoftMaterial", {
+      this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
         color: this.options.darkMode
           ? MaterialCreator.Colors.ShadowedBrightPurple
           : MaterialCreator.Colors.BrightPurple,

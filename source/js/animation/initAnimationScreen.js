@@ -2,6 +2,6 @@ import { Scene3d } from "./scene-3d";
 
 export const scene = new Scene3d({
   elementId: "canvas--animation-screen",
-  cameraConfig: { fov: 35, positionZ: 1750, near: 1, far: 5500 },
+  cameraConfig: { fov: 35, positionZ: 1405, near: 1, far: 5500 },
   enableAnimation: true,
 });

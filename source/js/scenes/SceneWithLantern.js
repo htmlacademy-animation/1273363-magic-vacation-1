@@ -3,6 +3,7 @@ import {Lantern} from "../animation/objects/Lantern";
 import {Snowman} from '../animation/objects/Snowman';
 import {MaterialCreator} from "../animation/MaterialCreator";
 import {degreesToRadians} from "../utils/degreesToRadians";
+import {MATERIAL_TYPE} from "../constants";
 
 export class SceneWithLantern extends THREE.Group {
   constructor(materialCreator) {
@@ -21,7 +22,7 @@ export class SceneWithLantern extends THREE.Group {
   addPyramid() {
     const pyramid = new THREE.Mesh(
       new THREE.ConeGeometry(250 / Math.pow(2, 0.5), 280, 4),
-      this.materialCreator.create("SoftMaterial", {
+      this.materialCreator.create(MATERIAL_TYPE.SoftMaterial, {
         color: MaterialCreator.Colors.Blue,
       })
     );
