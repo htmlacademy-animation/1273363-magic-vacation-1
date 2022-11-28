@@ -1,43 +1,36 @@
 import * as THREE from "three";
 import {RoadCustomMaterial} from "./RoadCustomMaterial";
 import {CarpetCustomMaterial} from "./CarpetCustomMaterial";
+import {MATERIAL_TYPE} from "../constants";
 
 export class MaterialCreator {
-  constructor(scene, gui) {
-    this.scene = scene;
-    this.sceneChildren = scene.scene.children;
-    this.gui = gui;
-
-    this.initMaterialGui();
-  }
-
   create(materialType, config) {
     switch (materialType) {
-      case "SoftMaterial": {
+      case MATERIAL_TYPE.SoftMaterial: {
         return this.createSoft({
           ...MaterialCreator.Config.SoftMaterial,
           ...config,
         });
       }
-      case "BasicMaterial": {
+      case MATERIAL_TYPE.BasicMaterial: {
         return this.createBasic({
           ...MaterialCreator.Config.BasicMaterial,
           ...config,
         });
       }
-      case "StrongMaterial": {
+      case MATERIAL_TYPE.StrongMaterial: {
         return this.createStrong({
           ...MaterialCreator.Config.StrongMaterial,
           ...config,
         });
       }
-      case "CustomRoadMaterial": {
+      case MATERIAL_TYPE.CustomRoadMaterial: {
         return this.createRoadMaterial({
           ...MaterialCreator.Config.SoftMaterial,
           ...config,
         });
       }
-      case "CustomCarpetMaterial": {
+      case MATERIAL_TYPE.CustomCarpetMaterial: {
         return this.createCarpetMaterial({
           ...MaterialCreator.Config.SoftMaterial,
           ...config,
@@ -70,81 +63,6 @@ export class MaterialCreator {
 
   createCarpetMaterial(config) {
     return new CarpetCustomMaterial(config);
-  }
-
-  findMaterialAndUpdate(data, materialName, propName) {
-    return (object) => {
-      if (object.type === "Mesh" && object.material.name === materialName) {
-        if (propName === "specular") {
-          object.material[propName] = new THREE.Color(data);
-        } else {
-          object.material[propName] = data;
-        }
-      }
-
-      if (object.type === "Group") {
-        object.children.forEach(
-          this.findMaterialAndUpdate(data, materialName, propName)
-        );
-      }
-    };
-  }
-
-  initMaterialGui() {
-    const softMaterial = this.gui.addFolder("SoftMaterial");
-    softMaterial
-      .add(MaterialCreator.Config.SoftMaterial, "roughness", 0, 1, 0.01)
-      .onChange((data) => {
-        this.sceneChildren.forEach(
-          this.findMaterialAndUpdate(data, "SoftMaterial", "roughness")
-        );
-      });
-    softMaterial
-      .add(MaterialCreator.Config.SoftMaterial, "metalness", 0, 1, 0.01)
-      .onChange((data) => {
-        this.sceneChildren.forEach(
-          this.findMaterialAndUpdate(data, "SoftMaterial", "metalness")
-        );
-      });
-    softMaterial.open();
-
-    const basicMaterial = this.gui.addFolder("BasicMaterial");
-    basicMaterial
-      .add(MaterialCreator.Config.BasicMaterial, "roughness", 0, 1, 0.01)
-      .onChange((data) => {
-        this.sceneChildren.forEach(
-          this.findMaterialAndUpdate(data, "BasicMaterial", "roughness")
-        );
-      });
-    basicMaterial
-      .add(MaterialCreator.Config.BasicMaterial, "metalness", 0, 1, 0.01)
-      .onChange((data) => {
-        this.sceneChildren.forEach(
-          this.findMaterialAndUpdate(data, "BasicMaterial", "metalness")
-        );
-      });
-    basicMaterial.open();
-
-    const strongMaterial = this.gui.addFolder("StrongMaterial");
-    strongMaterial
-      .add(MaterialCreator.Config.StrongMaterial, "shininess", 0, 100, 1)
-      .onChange((data) => {
-        this.sceneChildren.forEach(
-          this.findMaterialAndUpdate(data, "StrongMaterial", "shininess")
-        );
-      });
-    strongMaterial
-      .addColor(MaterialCreator.Config.StrongMaterial, "specular")
-      .onChange((value) => {
-        const data = Number("0x" + value.toString(16));
-
-        MaterialCreator.Config.StrongMaterial.specular = data;
-
-        this.sceneChildren.forEach(
-          this.findMaterialAndUpdate(data, "StrongMaterial", "specular")
-        );
-      });
-    strongMaterial.open();
   }
 }
 
@@ -180,16 +98,16 @@ MaterialCreator.Config = {
   SoftMaterial: {
     roughness: 0.9,
     metalness: 0.0,
-    name: "SoftMaterial",
+    name: MATERIAL_TYPE.SoftMaterial,
   },
   BasicMaterial: {
     roughness: 0.62,
     metalness: 0.53,
-    name: "BasicMaterial",
+    name: MATERIAL_TYPE.BasicMaterial,
   },
   StrongMaterial: {
     shininess: 0,
     specular: 0xffffff,
-    name: "StrongMaterial",
+    name: MATERIAL_TYPE.StrongMaterial,
   },
 };
