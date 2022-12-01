@@ -89,7 +89,9 @@ export class Scene3d {
 
     light3.position.set(730, 800, -985);
 
-    this.light.add(light1, light2, light3);
+    const light4 = new THREE.AmbientLight(0x404040);
+
+    this.light.add(light1, light2, light3,light4);
 
     this.light.position.z = this.camera.position.z;
     this.scene.add(this.light);

@@ -1,11 +1,9 @@
 import {OBJLoader} from "three/examples/jsm/loaders/OBJLoader";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
-import {MaterialCreator} from "../animation/MaterialCreator";
-import {MATERIAL_TYPE, OBJECT_ELEMENTS} from "../constants";
+import {OBJECT_ELEMENTS} from "../constants";
 
 export class ObjectsCreator {
-  constructor(materialCreator) {
-    this.materialCreator = materialCreator;
+  constructor() {
     this.objLoader = new OBJLoader();
     this.loaderGltf = new GLTFLoader();
 
@@ -23,18 +21,6 @@ export class ObjectsCreator {
     if (!config) return;
 
     const onComplete = (obj3d) => {
-      if (config.materialType) {
-        const material = this.materialCreator.create(config.materialType, {
-          color: config.color,
-        });
-
-        obj3d.traverse((child) => {
-          if (typeof child.isMesh === "function" && child.isMesh()) {
-            child.material = material;
-          }
-        });
-      }
-
       this.objects[name] = obj3d;
 
       if (typeof onSuccess === "function") onSuccess.call(null, obj3d);
@@ -55,8 +41,6 @@ export class ObjectsCreator {
 
 ObjectsCreator.objectsConfigMap = {
   [OBJECT_ELEMENTS.airplane]: {
-    materialType: MATERIAL_TYPE.BasicMaterial,
-    color: MaterialCreator.Colors.White,
     path: "./3d/module-6/scene-0-objects/airplane.obj",
   },
   [OBJECT_ELEMENTS.suitcase]: {
@@ -64,5 +48,20 @@ ObjectsCreator.objectsConfigMap = {
   },
   [OBJECT_ELEMENTS.watermelon]: {
     path: "./3d/module-6/scene-0-objects/watermelon.gltf",
+  },
+  [OBJECT_ELEMENTS.wallCorner]: {
+    path: "./3d/module-6/rooms-scenes/common/WallCornerUnit.obj",
+  },
+  [OBJECT_ELEMENTS.staticOutput1]: {
+    path: "./3d/module-6/rooms-scenes/scenesStatic/scene1-static-output-1.gltf",
+  },
+  [OBJECT_ELEMENTS.staticOutput2]: {
+    path: "./3d/module-6/rooms-scenes/scenesStatic/scene2-static-output-1.gltf",
+  },
+  [OBJECT_ELEMENTS.staticOutput3]: {
+    path: "./3d/module-6/rooms-scenes/scenesStatic/scene3-static-output-1.gltf",
+  },
+  [OBJECT_ELEMENTS.staticOutput4]: {
+    path: "./3d/module-6/rooms-scenes/scenesStatic/scene4-static-output-1.gltf",
   },
 };
