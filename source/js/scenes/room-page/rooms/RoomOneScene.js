@@ -46,6 +46,7 @@ export class RoomOneScene extends RoomScene {
     this.addFlower();
     this.addSaturn();
     this.addCarpet();
+    this.addDog();
   }
 
   addFlower() {
@@ -105,5 +106,24 @@ export class RoomOneScene extends RoomScene {
     const carpet = new Carpet(this.pageSceneCreator);
 
     this.addObject(carpet);
+  }
+
+  addDog() {
+    this.pageSceneCreator.createObjectMesh(
+      {
+        name: OBJECT_ELEMENTS.dog,
+        transform: {
+          transformX: 480,
+          transformZ: 420,
+
+          rotateY: 1.1,
+
+          scale: 1,
+        },
+      },
+      (obj) => {
+        this.addObject(obj);
+      }
+    );
   }
 }

@@ -41,13 +41,14 @@ export class RoomThreeScene extends RoomScene {
     this.addSnowman();
     this.addRoad();
     this.addRoadBlocks();
+    this.addCompass();
   }
 
   addSnowman() {
     const snowman = new Snowman(this.pageSceneCreator.materialCreator);
     const transform = {
       transformX: 210,
-      transformY: 60,
+      transformY: 50,
       transformZ: 400,
 
       rotateY: Math.PI / 2,
@@ -90,7 +91,7 @@ export class RoomThreeScene extends RoomScene {
 
         const transform = {
           transformX: radius * Math.cos(angle),
-          transformY: 50,
+          transformY: 40,
           transformZ: radius * Math.sin(angle),
         };
 
@@ -98,5 +99,16 @@ export class RoomThreeScene extends RoomScene {
 
         this.addObject(clone);
       });
+  }
+
+  addCompass() {
+    this.pageSceneCreator.createObjectMesh(
+      {
+        name: OBJECT_ELEMENTS.compass,
+      },
+      (obj) => {
+        this.addObject(obj);
+      }
+    );
   }
 }
