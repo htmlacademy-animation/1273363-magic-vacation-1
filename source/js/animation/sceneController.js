@@ -10,6 +10,7 @@ import {RoomsPageScene} from "../scenes/room-page/RoomsPageScene";
 import {degreesToRadians} from "../utils/degreesToRadians";
 import {TransformationGuiHelper} from "../helpers/TransformationGuiHelper";
 import {PageSceneCreator} from "../scenes/PageSceneCreator";
+import {AnimationManager} from './AnimationManager';
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -28,17 +29,29 @@ const pageSceneCreator = new PageSceneCreator(
   transformationGuiHelper
 );
 
+const animationManager = new AnimationManager();
+
 export const sceneController = {
+  ainPageScene: null,
+  roomsPageScene: null,
+
   clearScene() {
     scene.clearScene();
   },
 
-  addMainPageComposition() {
-    const mainPageComposition = new MainPageScene(pageSceneCreator);
-    scene.addSceneObject(mainPageComposition);
+  addMainPageScene() {
+    this.clearScene();
+
+    if (!this.mainPageScene) {
+      this.mainPageScene = new MainPageScene(pageSceneCreator, animationManager);
+    }
+
+    scene.addSceneObject(this.mainPageScene);
   },
 
-  addRoomsPageComposition() {
+  addRoomsPageScene() {
+    this.clearScene();
+
     const positionZ = 2150;
     const positionY = 700;
 
@@ -51,12 +64,16 @@ export const sceneController = {
       0
     );
 
-    const roomsPageScene = new RoomsPageScene(pageSceneCreator, scene);
+    if (!this.roomsPageScene) {
+      this.roomsPageScene = new RoomsPageScene(pageSceneCreator, scene);
+    }
 
-    scene.addSceneObject(roomsPageScene);
+    scene.addSceneObject(this.roomsPageScene);
   },
 
-  addScreenMesh() {
-    this.addRoomsPageComposition();
+  addScene() {
+    this.addMainPageScene();
+
+    // this.addRoomsPageScene();
   },
 };
