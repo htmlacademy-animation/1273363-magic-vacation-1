@@ -10,16 +10,23 @@ export class RoomScene extends THREE.Group {
   constructChildren() {
     this.addWalls();
     this.addFloor();
-    this.addStaticOutput()
+    this.addStaticOutput();
   }
 
   addObject(object) {
-    this.add(object)
+    object.traverse((obj) => {
+      if (obj.isMesh) {
+        obj.castShadow = true;
+        obj.receiveShadow = true;
+      }
+    });
+
+    this.add(object);
   }
 
   addWalls() {
     this.pageSceneCreator.createObjectMesh(this.wall, (obj) => {
-      this.add(obj);
+      this.addObject(obj);
     });
   }
 
@@ -28,14 +35,14 @@ export class RoomScene extends THREE.Group {
 
     const floor = new THREE.Mesh(geometry, this.floor.material);
 
-    floor.rotation.set(0, -Math.PI / 2, -Math.PI / 2, 'ZYX');
+    floor.rotation.set(0, -Math.PI / 2, -Math.PI / 2, "ZYX");
 
-    this.add(floor);
+    this.addObject(floor);
   }
 
   addStaticOutput() {
     this.pageSceneCreator.createObjectMesh(this.staticOutput, (obj) => {
-      this.add(obj);
+      this.addObject(obj);
     });
   }
 }

@@ -39,10 +39,11 @@ export const sceneController = {
   },
 
   addRoomsPageComposition() {
-    const positionZ = 2550;
-    const positionY = 800;
+    const positionZ = 2150;
+    const positionY = 700;
 
     scene.camera.position.set(0, positionY, positionZ);
+    scene.light.position.set(0, positionY, positionZ);
 
     scene.controls.target.set(
       0,
@@ -50,16 +51,9 @@ export const sceneController = {
       0
     );
 
-    const roomsComposition = new RoomsPageScene(pageSceneCreator);
+    const roomsPageScene = new RoomsPageScene(pageSceneCreator, scene);
 
-    roomsComposition.rotateY(-Math.PI / 4);
-    roomsComposition.rotateY(-Math.PI / 2);
-    roomsComposition.rotateY(-Math.PI / 2);
-
-    scene.addSceneObject(roomsComposition);
-    scene.addTransformationsToLoop([()=>{
-      roomsComposition.rotateY(-0.003)
-    }])
+    scene.addSceneObject(roomsPageScene);
   },
 
   addScreenMesh() {

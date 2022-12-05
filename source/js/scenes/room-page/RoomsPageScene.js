@@ -1,50 +1,58 @@
 import * as THREE from "three";
-import {RoomOneScene} from './rooms/RoomOneScene';
-import {RoomTwoScene} from './rooms/RoomTwoScene';
-import {RoomThreeScene} from './rooms/RoomThreeScene';
-import {RoomFourScene} from './rooms/RoomFourScene';
+import {OBJECT_ELEMENTS} from "../../constants";
+import {RoomsComposition} from "./rooms/RoomsComposition";
 
 export class RoomsPageScene extends THREE.Group {
-  constructor(pageSceneCreator) {
+  constructor(pageSceneCreator, scene) {
     super();
 
     this.pageSceneCreator = pageSceneCreator;
+    this.scene = scene;
 
     this.constructChildren();
   }
 
   constructChildren() {
-    this.addRoomOne();
-    this.addRoomTwo();
-    this.addRoomThree();
-    this.addRoomFour();
+    this.addRooms();
+
+    this.addSuitCase();
   }
 
-  addRoomOne() {
-    this.add(new RoomOneScene(this.pageSceneCreator))
+  addRooms() {
+    const roomsComposition = new RoomsComposition(this.pageSceneCreator);
+
+    roomsComposition.rotateY(-Math.PI / 4);
+    roomsComposition.rotateY(-Math.PI / 2);
+    roomsComposition.rotateY(-Math.PI / 2);
+
+    this.scene.addTransformationsToLoop([()=>{
+      roomsComposition.rotateY(-0.002);
+    }]);
+
+    this.add(roomsComposition);
   }
 
-  addRoomTwo() {
-    const roomTwo = new RoomTwoScene(this.pageSceneCreator);
+  addSuitCase() {
+    this.pageSceneCreator.createObjectMesh(
+      {
+        name: OBJECT_ELEMENTS.suitcase,
+        transform: {
+          transformX: -340,
+          transformZ: 750,
 
-    roomTwo.rotateY(Math.PI / 2);
+          rotateY: -0.4,
+        },
+      },
+      (obj) => {
+        obj.traverse((o) => {
+          if (o.isMesh) {
+            o.castShadow = true;
+            o.receiveShadow = true;
+          }
+        });
 
-    this.add(roomTwo);
-  }
-
-  addRoomThree() {
-    const roomTwo = new RoomThreeScene(this.pageSceneCreator);
-
-    roomTwo.rotateY(Math.PI);
-
-    this.add(roomTwo);
-  }
-
-  addRoomFour() {
-    const roomTwo = new RoomFourScene(this.pageSceneCreator);
-
-    roomTwo.rotateY( - Math.PI / 2);
-
-    this.add(roomTwo);
+        this.add(obj);
+      }
+    );
   }
 }
