@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import {OBJECT_ELEMENTS} from "../../constants";
 import {RoomsComposition} from "./rooms/RoomsComposition";
+import Animation from '../../animation/animation';
 
 export class RoomsPageScene extends THREE.Group {
   constructor(pageSceneCreator, scene) {
@@ -25,9 +26,14 @@ export class RoomsPageScene extends THREE.Group {
     roomsComposition.rotateY(-Math.PI / 2);
     roomsComposition.rotateY(-Math.PI / 2);
 
-    this.scene.addTransformationsToLoop([()=>{
-      roomsComposition.rotateY(-0.002);
-    }]);
+    this.scene.addAnimations(new Animation({
+      duration: 'infinite',
+      func: () => {
+        roomsComposition.rotateY(-0.004);
+      }
+    }));
+
+    this.scene.startAnimations();
 
     this.add(roomsComposition);
   }

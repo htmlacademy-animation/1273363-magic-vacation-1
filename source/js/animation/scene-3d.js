@@ -5,7 +5,6 @@ export class Scene3d {
   constructor(config = {}) {
     this.config = config;
     this.meshObjects = new Set();
-    this.transformationsLoop = [];
     this.canvasElement = document.getElementById(config.elementId);
 
     this.initRenderer();
@@ -15,14 +14,14 @@ export class Scene3d {
     this.initTextureLoader();
 
     window.addEventListener("resize", this.onWindowResize.bind(this));
-    this.animate = this.animate.bind(this);
+    this.update = this.update.bind(this);
 
     this.controls = new OrbitControls( this.camera, this.renderer.domElement);
 
     this.render();
 
     if (config.enableAnimation) {
-      this.animate();
+      this.update();
     }
   }
 
@@ -34,7 +33,7 @@ export class Scene3d {
     this.camera = new THREE.PerspectiveCamera(
       cameraConfig.fov || 75,
       cameraConfig.aspect || window.innerWidth / window.innerHeight,
-      cameraConfig.near || 0.1,
+      cameraConfig.near || 10,
       cameraConfig.far || 1000
     );
 
@@ -42,14 +41,18 @@ export class Scene3d {
   }
 
   initRenderer() {
+    const devicePixelRatio = window.devicePixelRatio;
+
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvasElement,
       alpha: true,
+      antialias: devicePixelRatio <= 1,
+      powerPreference: "high-performance",
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setClearColor(0x5f458c, 0);
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
     if (window.innerWidth > 768) {
       this.renderer.shadowMap.enabled = true;
@@ -135,12 +138,8 @@ export class Scene3d {
     this.renderer.render(this.scene, this.camera);
   }
 
-  animate(timestamp) {
-    requestAnimationFrame(this.animate);
-
-    this.transformationsLoop.forEach((callback) => {
-      callback(timestamp);
-    });
+  update() {
+    requestAnimationFrame(this.update);
 
     this.controls.update();
 
@@ -154,8 +153,6 @@ export class Scene3d {
   };
 
   clearScene() {
-    this.clearTransformationsLoop();
-
     this.meshObjects.forEach((mesh) => {
       this.scene.remove(mesh);
 
@@ -163,14 +160,6 @@ export class Scene3d {
     });
 
     this.scene.dispose();
-  }
-
-  addTransformationsToLoop(transformations) {
-    this.transformationsLoop.push(...transformations);
-  }
-
-  clearTransformationsLoop() {
-    this.transformationsLoop = [];
   }
 
   addSceneObject(meshObject) {
