@@ -2,9 +2,9 @@ import throttle from "lodash/throttle";
 import bodyTheme from "../helpers/body-theme";
 import { game } from "./game";
 import { prizesAnimation } from "./prizesAnimation";
-import { plainMeshController } from "../animation/plainMeshController";
-import {scene} from "../animation/initAnimationScreen";
-import {sceneController} from "../animation/sceneController";
+import { plainMeshController } from "../3d-animations/plainMeshController";
+import {scene} from "../3d-animations/initAnimationScreen";
+import {sceneController} from "../3d-animations/sceneController";
 
 export default class FullPageScroll {
   constructor() {

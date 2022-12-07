@@ -1,5 +1,5 @@
 import { game } from "./game";
-import {runLosingScene, runWinningScene} from "../animation/main";
+import {runLosingScene, runWinningScene} from "../2d-animations/main";
 
 export default () => {
   let showResultEls = document.querySelectorAll(`.js-show-result`);
