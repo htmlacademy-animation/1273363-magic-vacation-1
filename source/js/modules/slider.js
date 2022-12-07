@@ -1,6 +1,6 @@
 import Swiper from "swiper";
 import bodyTheme from "../helpers/body-theme";
-import { plainMeshController } from "../animation/plainMeshController";
+import { plainMeshController } from "../3d-animations/plainMeshController";
 
 export default () => {
   let storySlider;
