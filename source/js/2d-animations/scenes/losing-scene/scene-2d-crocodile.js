@@ -1,5 +1,5 @@
 import Scene2D from "../scene-2d";
-import Animation from "../../../Animation/Animation";
+import Animation from "../../../Animation/animation";
 import {easeInCubic, easeInOutSine, easeOutCubic} from "../../../helpers/easing";
 
 const IMAGES_URLS = Object.freeze({

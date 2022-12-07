@@ -1,4 +1,4 @@
-import Animation from "../../Animation/Animation";
+import Animation from "../../Animation/animation";
 import {easeOutCubic} from "../../helpers/easing";
 
 function getCurrentTransformPropertyByName(

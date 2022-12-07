@@ -1,4 +1,4 @@
-import Animation from "../../../Animation/Animation";
+import Animation from "../../../Animation/animation";
 import Scene2D from "../scene-2d";
 import {easeInQuad, easeOutElastic} from "../../../helpers/easing";
 
