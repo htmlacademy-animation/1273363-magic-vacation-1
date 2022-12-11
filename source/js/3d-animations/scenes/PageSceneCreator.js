@@ -1,3 +1,5 @@
+import {getScale} from "../ProjectGui/TransformationGuiHelper";
+
 export class PageSceneCreator {
   constructor(
     materialCreator,
@@ -53,24 +55,15 @@ export class PageSceneCreator {
     });
   }
 
-  setTransformParams(obj, params) {
-    const scale = typeof params.scale === "number" ? params.scale : 1;
+  setTransformParams(obj, {position = {}, rotation = {}, scale = {}}) {
+    obj.position.set(position.x || 0, position.y || 0, position.z || 0);
 
-    obj.position.set(
-      params.transformX || 0,
-      params.transformY || 0,
-      params.transformZ || 0
-    );
-    obj.rotation.set(
-      params.rotateX || 0,
-      params.rotateY || 0,
-      params.rotateZ || 0
-    );
+    obj.rotation.set(rotation.x || 0, rotation.y || 0, rotation.z || 0);
 
-    if (typeof params.scale === 'number') {
+    if (typeof scale === "number") {
       obj.scale.set(scale, scale, scale);
     } else {
-      obj.scale.set(params.scaleX || 1, params.scaleY || 1, params.scaleZ || 1);
+      obj.scale.set(getScale(scale.x), getScale(scale.y), getScale(scale.z));
     }
   }
 

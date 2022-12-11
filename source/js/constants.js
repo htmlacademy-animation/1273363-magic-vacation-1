@@ -47,3 +47,7 @@ export const EXTRUDE_SETTINGS = {
   bevelOffset: 0,
   bevelSegments: 10,
 };
+
+export const MESH_NAMES = {
+  SaturnRing: 'SaturnRing'
+};

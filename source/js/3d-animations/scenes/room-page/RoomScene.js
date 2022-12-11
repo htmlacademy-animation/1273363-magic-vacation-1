@@ -1,10 +1,11 @@
 import * as THREE from "three";
 
 export class RoomScene extends THREE.Group {
-  constructor(pageSceneCreator) {
+  constructor(pageSceneCreator, animationManager) {
     super();
 
     this.pageSceneCreator = pageSceneCreator;
+    this.animationManager = animationManager;
   }
 
   constructChildren() {

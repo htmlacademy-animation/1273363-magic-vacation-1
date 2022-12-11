@@ -2,7 +2,7 @@ import * as THREE from "three";
 import {LatheGeometryCreator} from "../creators/LatheGeometryCreator";
 import {degreesToRadians} from "../utils/degreesToRadians";
 import {MaterialCreator} from "../creators/MaterialCreator";
-import {MATERIAL_TYPE} from "../../constants";
+import {MATERIAL_TYPE, MESH_NAMES} from "../../constants";
 
 export class Saturn extends THREE.Group {
   constructor(materialCreator, options) {
@@ -82,6 +82,7 @@ export class Saturn extends THREE.Group {
       })
     );
 
+    ring.name = MESH_NAMES.SaturnRing;
     ring.rotateZ(degreesToRadians(-18));
 
     this.add(ring);
