@@ -5,10 +5,12 @@ import {MaterialCreator} from "../../../creators/MaterialCreator";
 import {Snowman} from "../../../mesh-complex-objects/Snowman";
 import {Road} from "../../../mesh-complex-objects/Road";
 import {degreesToRadians} from "../../../utils/degreesToRadians";
+import Animation from "../../../../Animation/animation";
+import {easeInQuad} from "../../../../helpers/easing";
 
 export class RoomThreeScene extends RoomScene {
-  constructor(pageSceneCreator) {
-    super(pageSceneCreator);
+  constructor(pageSceneCreator, animationManager) {
+    super(pageSceneCreator, animationManager);
 
     this.wall = {
       name: OBJECT_ELEMENTS.wallCorner,
@@ -47,12 +49,14 @@ export class RoomThreeScene extends RoomScene {
   addSnowman() {
     const snowman = new Snowman(this.pageSceneCreator.materialCreator);
     const transform = {
-      transformX: 210,
-      transformY: 50,
-      transformZ: 400,
-
-      rotateY: Math.PI / 2,
-
+      position: {
+        x: 210,
+        y: 50,
+        z: 400,
+      },
+      rotation: {
+        y: Math.PI / 2,
+      },
       scale: 1,
     };
 
@@ -90,9 +94,11 @@ export class RoomThreeScene extends RoomScene {
         const clone = cylinder.clone();
 
         const transform = {
-          transformX: radius * Math.cos(angle),
-          transformY: 40,
-          transformZ: radius * Math.sin(angle),
+          position: {
+            x: radius * Math.cos(angle),
+            y: 40,
+            z: radius * Math.sin(angle),
+          },
         };
 
         this.pageSceneCreator.setTransformParams(clone, transform);
@@ -106,8 +112,24 @@ export class RoomThreeScene extends RoomScene {
       {
         name: OBJECT_ELEMENTS.compass,
       },
-      (obj) => {
-        this.addObject(obj);
+      (compas) => {
+        compas.traverse((obj) => {
+          if (obj.name === "Compas") {
+            this.animationManager.addAnimations(
+              new Animation({
+                func: (_, { startTime, currentTime }) => {
+                  obj.rotation.z =
+                    degreesToRadians(10) *
+                    Math.sin((currentTime - startTime) / 1000);
+                },
+                duration: "infinite",
+                easing: easeInQuad,
+              })
+            );
+          }
+        });
+
+        this.addObject(compas);
       }
     );
   }

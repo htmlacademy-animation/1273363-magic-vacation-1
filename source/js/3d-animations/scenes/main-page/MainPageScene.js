@@ -35,16 +35,12 @@ export class MainPageScene extends THREE.Group {
           ),
         },
         transform: {
-          from: {
-            transformX: 1000,
-            transformY: 1000,
-            transformZ: 0,
-
-            rotateX: 0,
-            rotateY: 0,
-            rotateZ: Math.PI,
-
-            scale: 1,
+          position: {
+            x: 1000,
+            y: 1000,
+          },
+          rotation: {
+            z: Math.PI,
           },
         },
       },
@@ -63,24 +59,25 @@ export class MainPageScene extends THREE.Group {
           ),
         },
         transform: {
-          from: {
-            rotateX: 6.2,
-            rotateY: 0.5,
-            rotateZ: 3.6,
-
-            scale: 0,
+          rotation: {
+            x: 6.2,
+            y: 0.5,
+            z: 3.6,
           },
-          to: {
-            transformX: -460,
-            transformY: 270,
-            transformZ: 140,
-
-            rotateX: 6.2,
-            rotateY: 0.5,
-            rotateZ: 3.6,
-
-            scale: 1,
+          scale: 0,
+        },
+        transformAppear: {
+          position: {
+            x: -460,
+            y: 370,
+            z: 140,
           },
+          rotation: {
+            x: 6.2,
+            y: 0.5,
+            z: 3.6,
+          },
+          scale: 1,
         },
       },
       {
@@ -98,24 +95,25 @@ export class MainPageScene extends THREE.Group {
           ),
         },
         transform: {
-          from: {
-            rotateX: 6.1,
-            rotateY: -1,
-            rotateZ: 0.3,
-
-            scale: 0,
+          rotation: {
+            x: 6.1,
+            y: -1,
+            z: 0.3,
+            },
+          scale: 0,
+        },
+        transformAppear: {
+          position: {
+            x: -320,
+            y: -20,
+            z: 90,
           },
-          to: {
-            transformX: -320,
-            transformY: -20,
-            transformZ: 90,
-
-            rotateX: 6.1,
-            rotateY: 0.7,
-            rotateZ: 0.3,
-
-            scale: 1,
+          rotation: {
+            x: 6.1,
+            y: 0.7,
+            z: 0.3,
           },
+          scale: 1,
         },
       },
       {
@@ -133,24 +131,25 @@ export class MainPageScene extends THREE.Group {
           ),
         },
         transform: {
-          from: {
-            rotateX: -1,
-            rotateY: 1,
-            rotateZ: 4.3,
-
-            scale: 0,
+          rotation: {
+            x: -1,
+            y: 1,
+            z: 4.3,
           },
-          to: {
-            transformX: 500,
-            transformY: 290,
-            transformZ: 100,
-
-            rotateX: -0.2,
-            rotateY: 2.5,
-            rotateZ: 4.3,
-
-            scale: 1,
+          scale: 0,
+        },
+        transformAppear: {
+          position: {
+            x: 500,
+            y: 290,
+            z: 100,
           },
+          rotation: {
+            x: -0.2,
+            y: 2.5,
+            z: 4.3,
+          },
+          scale: 1,
         },
       },
       {
@@ -168,24 +167,25 @@ export class MainPageScene extends THREE.Group {
           ),
         },
         transform: {
-          from: {
-            rotateX: -1.6,
-            rotateY: 2,
-            rotateZ: 2.8,
-
-            scale: 0,
+          rotation: {
+            x: -1.6,
+            y: 2,
+            z: 2.8,
           },
-          to: {
-            transformX: 140,
-            transformY: -260,
-            transformZ: 50,
-
-            rotateX: -0.7,
-            rotateY: 3.2,
-            rotateZ: 2.8,
-
-            scale: 1,
+          scale: 0,
+        },
+        transformAppear: {
+          position: {
+            x: 140,
+            y: -260,
+            z: 50,
           },
+          rotation: {
+            x: -0.7,
+            y: 3.2,
+            z: 2.8,
+          },
+          scale: 1,
         },
       },
     ];
@@ -195,38 +195,41 @@ export class MainPageScene extends THREE.Group {
         name: OBJECT_ELEMENTS.watermelon,
         bounceAnimation: true,
         transform: {
-          from: {
-            rotateX: 0,
-            rotateY: 3.3,
-            rotateZ: 0,
-
-            scale: 0,
+          rotation: {
+            x: 0,
+            y: 3.3,
+            z: 0,
           },
-          to: {
-            transformX: -600,
-            transformY: -240,
-            transformZ: 200,
-
-            rotateX: 0.3,
-            rotateY: 3.3,
-            rotateZ: 0.8,
-
-            scale: 1.8,
+          scale: 0,
+        },
+        transformAppear: {
+          position: {
+            x: -600,
+            y: -240,
+            z: 200,
           },
+          rotation: {
+            x: 0.3,
+            y: 3.3,
+            z: 0.8,
+          },
+          scale: 1.8,
         },
       },
       /*{
         name: OBJECT_ELEMENTS.airplane,
         transform: {
-          transformX: 190,
-          transformY: 120,
-          transformZ: 70,
-
-          rotateX: 0.7,
-          rotateY: 2.4,
-          rotateZ: 0,
-
-          scale: 1,
+          position: {
+             x: 190,
+             y: 120,
+             z: 70,
+           },
+           rotation: {
+             x: 0.7,
+             y: 2.4,
+             z: 0,
+           },
+           scale: 1,
         },
         material: this.pageSceneCreator.materialCreator.create(
           MATERIAL_TYPE.BasicMaterial,
@@ -238,15 +241,17 @@ export class MainPageScene extends THREE.Group {
       {
         name: OBJECT_ELEMENTS.suitcase,
         transform: {
-          transformX: -60,
-          transformY: -120,
-          transformZ: 120,
-
-          rotateX: 0.5,
-          rotateY: 3.8,
-          rotateZ: 0.2,
-
-          scale: 0.4,
+          position: {
+             x: -60,
+             y: -120,
+             z: 120,
+           },
+           rotation: {
+             x: 0.5,
+             y: 3.8,
+             z: 0.2,
+           },
+           scale: 0.4,
         },
       },*/
     ];
@@ -279,9 +284,9 @@ export class MainPageScene extends THREE.Group {
 
   addObject(config) {
     return (obj) => {
-      if (config.transform.to) {
+      if (config.transformAppear) {
         this.animationManager.addAnimations(
-          createObjectTransformAnimation(obj, config.transform, {
+          createObjectTransformAnimation(obj, config.transformAppear, {
             duration: 1500,
             delay: 500,
             easing: easeOutCubic,
@@ -303,33 +308,27 @@ export class MainPageScene extends THREE.Group {
       withRope: false,
     });
 
-    const transform = {
-      from: {
-        rotateY: 3.6,
-        rotateZ: 5,
-
-        scale: 0,
-      },
-      to: {
-        transformX: 350,
-        transformY: -120,
-        transformZ: 140,
-
-        rotateY: 3.6,
-        rotateZ: 3,
-
-        scale: 0.5,
-      },
-    };
+    this.pageSceneCreator.setTransformParams(saturn, {
+      rotation: { y: 3.6, z: 1 },
+      scale: 0,
+    });
 
     this.pageSceneCreator.setTransformParams(saturn, transform.from);
 
     this.animationManager.addAnimations(
-      createObjectTransformAnimation(saturn, transform, {
-        duration: 1500,
-        delay: 500,
-        easing: easeOutCubic,
-      })
+      createObjectTransformAnimation(
+        saturn,
+        {
+          position: { x: 350, y: -120, z: 140 },
+          rotation: { y: 3.6, z: 0 },
+          scale: 0.5,
+        },
+        {
+          duration: 1500,
+          delay: 500,
+          easing: easeOutCubic,
+        }
+      )
     );
 
     this.animationManager.addAnimations(createBounceAnimation(saturn));

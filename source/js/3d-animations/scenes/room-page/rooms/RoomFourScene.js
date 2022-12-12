@@ -8,10 +8,13 @@ import {
 import { MaterialCreator } from "../../../creators/MaterialCreator";
 import {Saturn} from '../../../mesh-complex-objects/Saturn';
 import {Carpet} from '../../../mesh-complex-objects/Carpet';
+import Animation from "../../../../Animation/animation";
+import {degreesToRadians} from "../../../utils/degreesToRadians";
+import {easeInOutSine, easeInQuad} from "../../../../helpers/easing";
 
 export class RoomFourScene extends RoomScene {
-  constructor(pageSceneCreator) {
-    super(pageSceneCreator);
+  constructor(pageSceneCreator, animationManager) {
+    super(pageSceneCreator, animationManager);
 
     this.wall = {
       name: OBJECT_ELEMENTS.wallCorner,
@@ -62,16 +65,16 @@ export class RoomFourScene extends RoomScene {
         ),
       },
       transform: {
-        from: {
-          transformX: 60,
-          transformY: 410,
-          transformZ: 440,
-
-          rotateX: Math.PI,
-          rotateY: -Math.PI / 2,
-
-          scale: 1,
+        position: {
+          x: 60,
+          y: 410,
+          z: 440,
         },
+        rotation: {
+          x: Math.PI,
+          y: -Math.PI / 2,
+        },
+        scale: 1,
       },
     };
 
@@ -87,12 +90,14 @@ export class RoomFourScene extends RoomScene {
     });
 
     const transform = {
-      transformX: 350,
-      transformY: 500,
-      transformZ: 280,
-
-      rotateY: -Math.PI / 2,
-
+      position: {
+        x: 350,
+        y: 500,
+        z: 280,
+      },
+      rotation: {
+        y: -Math.PI / 2,
+      },
       scale: 1,
     };
 
@@ -112,16 +117,57 @@ export class RoomFourScene extends RoomScene {
       {
         name: OBJECT_ELEMENTS.sonya,
         transform: {
-          from: {
-            transformX: 440,
-            transformY: 120,
-            transformZ: 280,
-          }
+          position: {
+            x: 440,
+            y: 120,
+            z: 280,
+          },
         },
       },
-      (obj) => {
-        this.addObject(obj);
-      }
+      (sonya) => {
+        this.animationManager.addAnimations(
+          new Animation({
+            func: (_, {startTime, currentTime}) => {
+              sonya.position.y =
+                120 + 10 * Math.sin((currentTime - startTime) / 500);
+            },
+            duration: "infinite",
+            easing: easeInOutSine,
+          })
+        );
+
+        sonya.traverse((obj) => {
+          if (obj.name === "RightHand") {
+            this.animationManager.addAnimations(
+              new Animation({
+                func: (_, {startTime, currentTime}) => {
+                  obj.rotation.y =
+                    degreesToRadians(-55) +
+                    degreesToRadians(5) *
+                    Math.cos(1.5 + (currentTime - startTime) / 500);
+                },
+                duration: "infinite",
+                easing: easeInQuad,
+              })
+            );
+          } else if (obj.name === "LeftHand") {
+            this.animationManager.addAnimations(
+              new Animation({
+                func: (_, {startTime, currentTime}) => {
+                  obj.rotation.y =
+                    degreesToRadians(55) +
+                    degreesToRadians(5) *
+                    Math.cos(-1.5 + (currentTime - startTime) / 500);
+                },
+                duration: "infinite",
+                easing: easeInQuad,
+              })
+            );
+          }
+        });
+
+        this.addObject(sonya);
+      },
     );
   }
 }

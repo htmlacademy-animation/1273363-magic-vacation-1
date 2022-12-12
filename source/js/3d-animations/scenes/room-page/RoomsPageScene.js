@@ -28,6 +28,48 @@ export class RoomsPageScene extends THREE.Group {
 
     roomsComposition.rotateY(-Math.PI / 4);
 
+    this.animationManager.addAnimations(
+      createObjectTransformAnimation(
+        roomsComposition,
+        {
+          rotation: {
+            y: -Math.PI / 4 - Math.PI / 2,
+          },
+        },
+        {
+          duration: 1500,
+          delay: 4000,
+          easing: easeInOutSine,
+        }
+      ),
+      createObjectTransformAnimation(
+        roomsComposition,
+        {
+          rotation: {
+            y: -Math.PI / 4 - Math.PI ,
+          },
+        },
+        {
+          duration: 1500,
+          delay: 8000,
+          easing: easeInOutSine,
+        }
+      ),
+      createObjectTransformAnimation(
+        roomsComposition,
+        {
+          rotation: {
+            y: -Math.PI / 4 - 3 * Math.PI / 2,
+          },
+        },
+        {
+          duration: 1500,
+          delay: 12000,
+          easing: easeInOutSine,
+        }
+      )
+    );
+
     this.add(roomsComposition);
   }
 
@@ -35,13 +77,15 @@ export class RoomsPageScene extends THREE.Group {
     this.pageSceneCreator.createObjectMesh(
       {
         name: OBJECT_ELEMENTS.suitcase,
-        enableGui: true,
         transform: {
-          transformX: -340,
-          transformY: 150,
-          transformZ: 750,
-
-          rotateY: -0.4,
+          position: {
+            x: -340,
+            y: 150,
+            z: 750,
+          },
+          rotation: {
+            y: -0.4,
+          },
         },
       },
       (obj) => {
@@ -62,7 +106,7 @@ export class RoomsPageScene extends THREE.Group {
               scale: {
                 x: 0.95,
                 y: 1.1,
-                z: 0.95
+                z: 0.95,
               },
             },
             {
@@ -79,7 +123,7 @@ export class RoomsPageScene extends THREE.Group {
               scale: {
                 x: 1.05,
                 y: 0.93,
-                z: 1.05
+                z: 1.05,
               },
             },
             {
@@ -97,7 +141,7 @@ export class RoomsPageScene extends THREE.Group {
               scale: {
                 x: 0.98,
                 y: 1.04,
-                z: 0.98
+                z: 0.98,
               },
             },
             {
