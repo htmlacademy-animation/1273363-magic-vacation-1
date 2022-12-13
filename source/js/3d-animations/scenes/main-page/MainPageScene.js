@@ -59,6 +59,7 @@ export class MainPageScene extends THREE.Group {
             }
           ),
         },
+
         transform: {
           rotation: {
             x: 6.2,
@@ -100,7 +101,7 @@ export class MainPageScene extends THREE.Group {
             x: 6.1,
             y: -1,
             z: 0.3,
-            },
+          },
           scale: 0,
         },
         transformAppear: {
@@ -217,35 +218,35 @@ export class MainPageScene extends THREE.Group {
           scale: 1.8,
         },
       },
-      /*{
-        name: OBJECT_ELEMENTS.airplane,
-        transform: {
-          position: {
-             x: 190,
-             y: 120,
-             z: 70,
-           },
-           rotation: {
-             x: 0.7,
-             y: 2.4,
-             z: 0,
-           },
-           scale: 1,
-        },
-        material: this.pageSceneCreator.materialCreator.create(
-          MATERIAL_TYPE.BasicMaterial,
-          {
-            color: MaterialCreator.Colors.White,
-          }
-        ),
-      },*/
+      // {
+      //   name: OBJECT_ELEMENTS.airplane,
+      //   transform: {
+      //     position: {
+      //       x: 190,
+      //       y: 120,
+      //       z: 70,
+      //     },
+      //     rotation: {
+      //       x: 0.7,
+      //       y: 2.4,
+      //       z: 0,
+      //     },
+      //     scale: 1,
+      //   },
+      //   material: this.pageSceneCreator.materialCreator.create(
+      //     MATERIAL_TYPE.BasicMaterial,
+      //     {
+      //       color: MaterialCreator.Colors.White,
+      //     }
+      //   ),
+      // },
       {
         name: OBJECT_ELEMENTS.suitcase,
         enableGui: true,
         transform: {
           scale: 0,
         },
-      }
+      },
     ];
 
     this.constructChildren();
@@ -311,8 +312,6 @@ export class MainPageScene extends THREE.Group {
       rotation: { y: 3.6, z: 1 },
       scale: 0,
     });
-
-    this.pageSceneCreator.setTransformParams(saturn, transform.from);
 
     this.animationManager.addAnimations(
       createObjectTransformAnimation(
