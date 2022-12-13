@@ -36,25 +36,25 @@ export class TransformationGuiHelper extends GUI {
     const objectRotation = newFolder.addFolder("rotation");
     if (typeof rotation.x === "number") {
       objectRotation
-        .add(rotation, "x", -Math.PI, Math.PI, 0.1)
+        .add(rotation, "x", -Math.PI* 2, Math.PI* 2, 0.1)
         .onChange((data) => {
-          object.rotation.set(data, rotation.y || 0, rotation.z || 0);
+          object.rotation.set(data, rotation.y || 0, rotation.z || 0, rotation.order || 'XYZ');
         });
     }
 
     if (typeof rotation.y === "number") {
       objectRotation
-        .add(rotation, "y", -Math.PI, Math.PI, 0.1)
+        .add(rotation, "y", -Math.PI * 2, Math.PI * 2, 0.1)
         .onChange((data) => {
-          object.rotation.set(rotation.x || 0, data, rotation.z || 0);
+          object.rotation.set(rotation.x || 0, data, rotation.z || 0, rotation.order || 'XYZ');
         });
     }
 
     if (typeof rotation.z === "number") {
       objectRotation
-        .add(rotation, "z", -Math.PI, Math.PI, 0.1)
+        .add(rotation, "z", -Math.PI* 2, Math.PI* 2, 0.1)
         .onChange((data) => {
-          object.rotation.set(rotation.x || 0, rotation.y || 0, data);
+          object.rotation.set(rotation.x || 0, rotation.y || 0, data, rotation.order || 'XYZ');
         });
     }
     objectRotation.open();
