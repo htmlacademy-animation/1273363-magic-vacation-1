@@ -6,11 +6,12 @@ import {
 } from "../../../constants";
 import {MaterialCreator} from "../../creators/MaterialCreator";
 import {Saturn} from "../../mesh-complex-objects/Saturn";
-import {easeOutCubic} from "../../../helpers/easing";
 import {
   createBounceAnimation,
   createObjectTransformAnimation,
 } from "../../creators/animationCreators";
+import {easeInOutSine, easeOutCubic} from "../../../helpers/easing";
+import Animation from "../../../Animation/animation";
 
 export class MainPageScene extends THREE.Group {
   constructor(pageSceneCreator, animationManager) {
@@ -58,6 +59,7 @@ export class MainPageScene extends THREE.Group {
             }
           ),
         },
+
         transform: {
           rotation: {
             x: 6.2,
@@ -99,7 +101,7 @@ export class MainPageScene extends THREE.Group {
             x: 6.1,
             y: -1,
             z: 0.3,
-            },
+          },
           scale: 0,
         },
         transformAppear: {
@@ -216,44 +218,35 @@ export class MainPageScene extends THREE.Group {
           scale: 1.8,
         },
       },
-      /*{
-        name: OBJECT_ELEMENTS.airplane,
-        transform: {
-          position: {
-             x: 190,
-             y: 120,
-             z: 70,
-           },
-           rotation: {
-             x: 0.7,
-             y: 2.4,
-             z: 0,
-           },
-           scale: 1,
-        },
-        material: this.pageSceneCreator.materialCreator.create(
-          MATERIAL_TYPE.BasicMaterial,
-          {
-            color: MaterialCreator.Colors.White,
-          }
-        ),
-      },
+      // {
+      //   name: OBJECT_ELEMENTS.airplane,
+      //   transform: {
+      //     position: {
+      //       x: 190,
+      //       y: 120,
+      //       z: 70,
+      //     },
+      //     rotation: {
+      //       x: 0.7,
+      //       y: 2.4,
+      //       z: 0,
+      //     },
+      //     scale: 1,
+      //   },
+      //   material: this.pageSceneCreator.materialCreator.create(
+      //     MATERIAL_TYPE.BasicMaterial,
+      //     {
+      //       color: MaterialCreator.Colors.White,
+      //     }
+      //   ),
+      // },
       {
         name: OBJECT_ELEMENTS.suitcase,
+        enableGui: true,
         transform: {
-          position: {
-             x: -60,
-             y: -120,
-             z: 120,
-           },
-           rotation: {
-             x: 0.5,
-             y: 3.8,
-             z: 0.2,
-           },
-           scale: 0.4,
+          scale: 0,
         },
-      },*/
+      },
     ];
 
     this.constructChildren();
@@ -284,6 +277,13 @@ export class MainPageScene extends THREE.Group {
 
   addObject(config) {
     return (obj) => {
+      if (config.name === OBJECT_ELEMENTS.suitcase) {
+        const suitcase = this.addSuitCaseAnimation(obj);
+
+        this.addMesh(suitcase);
+        return;
+      }
+
       if (config.transformAppear) {
         this.animationManager.addAnimations(
           createObjectTransformAnimation(obj, config.transformAppear, {
@@ -312,8 +312,6 @@ export class MainPageScene extends THREE.Group {
       rotation: { y: 3.6, z: 1 },
       scale: 0,
     });
-
-    this.pageSceneCreator.setTransformParams(saturn, transform.from);
 
     this.animationManager.addAnimations(
       createObjectTransformAnimation(
@@ -363,5 +361,85 @@ export class MainPageScene extends THREE.Group {
     ) {
       this.animationManager.startAnimations();
     }
+  }
+
+  addSuitCaseAnimation(suitcase) {
+    const suitcasePositionWrapper = new THREE.Group();
+    const suitcaseRotateWrapper = new THREE.Group();
+
+    suitcaseRotateWrapper.add(suitcase);
+    suitcasePositionWrapper.add(suitcaseRotateWrapper);
+
+    suitcaseRotateWrapper.rotation.set(0.2, -1.5, 1.3, "YZX");
+
+    this.animationManager.addAnimations(
+      new Animation({
+        func: (progress) => {
+          suitcaseRotateWrapper.rotation.set(
+            0.2 - 0.6 * progress,
+            -1.5,
+            1.3,
+            "YZX"
+          );
+        },
+        duration: 500,
+        delay: 500,
+        easing: easeInOutSine,
+      }),
+      new Animation({
+        func: (progress) => {
+          suitcaseRotateWrapper.rotation.set(
+            -0.4,
+            -1.5 - progress,
+            1.3 * (1 - progress),
+            "YZX"
+          );
+        },
+        duration: 500,
+        delay: 1000,
+        easing: easeInOutSine,
+      })
+    );
+
+    this.animationManager.addAnimations(
+      new Animation({
+        func: (progress) => {
+          suitcasePositionWrapper.position.y = progress * 70;
+          suitcasePositionWrapper.position.z = progress * 60;
+        },
+        duration: 500,
+        delay: 500,
+        easing: easeInOutSine,
+      }),
+      new Animation({
+        func: (progress) => {
+          suitcasePositionWrapper.position.x = -60 * progress;
+          suitcasePositionWrapper.position.y = 70 - 220 * progress;
+          suitcasePositionWrapper.position.z = 60 + progress * 60;
+        },
+        duration: 600,
+        delay: 1000,
+        easing: easeInOutSine,
+      })
+    );
+
+    this.animationManager.addAnimations(
+      new Animation({
+        func: (progress) => {
+          const scale = 0.4 * progress;
+
+          suitcase.scale.set(scale, scale, scale);
+        },
+        duration: 1000,
+        delay: 500,
+        easing: easeInOutSine,
+      })
+    );
+
+    this.animationManager.addAnimations(
+      createBounceAnimation(suitcasePositionWrapper)
+    );
+
+    return suitcasePositionWrapper;
   }
 }
