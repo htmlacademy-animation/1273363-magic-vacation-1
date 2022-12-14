@@ -10,8 +10,13 @@ import {
   createBounceAnimation,
   createObjectTransformAnimation,
 } from "../../creators/animationCreators";
-import {easeInOutSine, easeOutCubic} from "../../../helpers/easing";
+import {
+  easeInOutSine,
+  easeOutCubic,
+  easeOutExpo,
+} from "../../../helpers/easing";
 import Animation from "../../../Animation/animation";
+import {AirplaneRig} from "../../rigs/AirplaneRig/AirplaneRig";
 
 export class MainPageScene extends THREE.Group {
   constructor(pageSceneCreator, animationManager) {
@@ -218,28 +223,6 @@ export class MainPageScene extends THREE.Group {
           scale: 1.8,
         },
       },
-      // {
-      //   name: OBJECT_ELEMENTS.airplane,
-      //   transform: {
-      //     position: {
-      //       x: 190,
-      //       y: 120,
-      //       z: 70,
-      //     },
-      //     rotation: {
-      //       x: 0.7,
-      //       y: 2.4,
-      //       z: 0,
-      //     },
-      //     scale: 1,
-      //   },
-      //   material: this.pageSceneCreator.materialCreator.create(
-      //     MATERIAL_TYPE.BasicMaterial,
-      //     {
-      //       color: MaterialCreator.Colors.White,
-      //     }
-      //   ),
-      // },
       {
         name: OBJECT_ELEMENTS.suitcase,
         enableGui: true,
@@ -258,6 +241,55 @@ export class MainPageScene extends THREE.Group {
     this.addPlaneMeshBehindKeyhole();
 
     this.addSaturn();
+
+    this.addAeroplaneRig();
+  }
+
+  addAeroplaneRig() {
+    const airplaneRig = new AirplaneRig(this.pageSceneCreator);
+
+    airplaneRig.position.x = 135;
+
+    const initialFightRadius = airplaneRig.flightRadius;
+    const initialFightHeight = airplaneRig.flightHeight;
+    const initialRigRotationY = airplaneRig.rigRotationY;
+    const initialPlaneRotationZ = airplaneRig.planeRotationZ;
+    const initialPlaneIncline = airplaneRig.planeIncline;
+
+    this.animationManager.addAnimations(
+      new Animation({
+        func: (progress) => {
+          airplaneRig.flightRadius =
+            initialFightRadius +
+            (airplaneRig.maxFlightRadius - initialFightRadius) * progress;
+
+          airplaneRig.flightHeight =
+            initialFightHeight +
+            (airplaneRig.maxFlightHeight - initialFightHeight) * progress;
+
+          airplaneRig.rigRotationY =
+            initialRigRotationY + (progress * 5 * Math.PI) / 4;
+
+          airplaneRig.planeRotationZ =
+            progress < 0.5
+              ? initialPlaneRotationZ - progress * Math.PI
+              : initialPlaneRotationZ -
+              0.5 * Math.PI +
+              (progress - 0.5) * Math.PI;
+
+          airplaneRig.planeIncline =
+            initialPlaneIncline + (progress * Math.PI) / 5;
+
+          airplaneRig.invalidate(progress);
+        },
+        duration: 2000,
+        delay: 1400,
+        easing: easeOutExpo,
+      }),
+      createBounceAnimation(airplaneRig)
+    );
+
+    this.addMesh(airplaneRig);
   }
 
   addMeshObjects() {
@@ -345,7 +377,7 @@ export class MainPageScene extends THREE.Group {
       )
     );
 
-    meshBehindTheKeyHole.position.set(0, 0, -10);
+    meshBehindTheKeyHole.position.set(0, 0, -200);
 
     this.addMesh(meshBehindTheKeyHole);
   }
@@ -357,7 +389,7 @@ export class MainPageScene extends THREE.Group {
 
     if (
       this.objectsLoaded ===
-      this.meshObjects.length + this.meshExtrudedObjects.length + 2
+      this.meshObjects.length + this.meshExtrudedObjects.length + 3
     ) {
       this.animationManager.startAnimations();
     }
