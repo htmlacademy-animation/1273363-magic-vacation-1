@@ -11,8 +11,8 @@
   background-position: center;
 
   // todo: временно добавлен фон для работы с 3D моделями на главном экране
-  background-color: #1c1c1f;
-  z-index: 999;
+  //background-color: #1c1c1f;
+  //z-index: 999;
 
   @include retina {
     //background-image: url("../img/scene@2x.png");

@@ -11,9 +11,9 @@ stats2.showPanel(2);
 stats2.domElement.style.cssText = 'position:absolute;top:0px;left:80px;z-index:1000';
 document.body.appendChild(stats2.domElement);
 
-export const scene = new Scene3d({
+export const infrastructure = new Scene3d({
   elementId: "canvas--animation-screen",
-  cameraConfig: { fov: 35, positionZ: 1405, near: 1, far: 5500 },
+  cameraConfig: { fov: 35, near: 1, far: 5500 },
   enableAnimation: true,
   stats: [stats1, stats2]
 });

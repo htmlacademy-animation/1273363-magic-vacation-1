@@ -147,7 +147,7 @@ export class MainPageScene extends THREE.Group {
         },
         transformAppear: {
           position: {
-            x: 500,
+            x: 600,
             y: 290,
             z: 100,
           },

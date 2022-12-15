@@ -9,7 +9,8 @@ import form from "./modules/form.js";
 import social from "./modules/social.js";
 import FullPageScroll from "./modules/full-page-scroll";
 import "./modules/accent-typography.js";
-import "./3d-animations/initAnimationScreen"
+import "./3d-animations/initAnimationScreen";
+import {SceneController} from './3d-animations/SceneController';
 
 // init modules
 mobileHeight();
@@ -21,9 +22,13 @@ result();
 form();
 social();
 
+export const sceneController = new SceneController();
+
 const fullPageScroll = new FullPageScroll();
 fullPageScroll.init();
 
 window.addEventListener(`load`, () => {
-  document.body.classList.add(`loaded`);
+  setTimeout(()=>{
+    document.body.classList.add(`loaded`);
+  }, 2000)
 });
