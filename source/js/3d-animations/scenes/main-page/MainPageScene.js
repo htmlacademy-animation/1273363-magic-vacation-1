@@ -225,7 +225,6 @@ export class MainPageScene extends THREE.Group {
       },
       {
         name: OBJECT_ELEMENTS.suitcase,
-        enableGui: true,
         transform: {
           scale: 0,
         },
