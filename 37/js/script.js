@@ -72962,7 +72962,6 @@ class MainPageScene extends three__WEBPACK_IMPORTED_MODULE_0__["Group"] {
       },
       {
         name: _constants__WEBPACK_IMPORTED_MODULE_1__["OBJECT_ELEMENTS"].suitcase,
-        enableGui: true,
         transform: {
           scale: 0,
         },
