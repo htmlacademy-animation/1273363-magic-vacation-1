@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 export class Scene3d {
   constructor(config = {}) {
@@ -15,8 +14,6 @@ export class Scene3d {
 
     window.addEventListener("resize", this.onWindowResize.bind(this));
     this.update = this.update.bind(this);
-
-    this.controls = new OrbitControls( this.camera, this.renderer.domElement);
 
     this.render();
 
@@ -71,11 +68,11 @@ export class Scene3d {
 
     directionalLightTargetObject.position.set(
       0,
-      -this.camera.position.z * Math.tan((15 * Math.PI) / 180),
-      0
+      -1000 * Math.tan((15 * Math.PI) / 180),
+      -1000
     );
 
-    this.scene.add(directionalLightTargetObject);
+    this.light.add(directionalLightTargetObject);
 
     light1.target = directionalLightTargetObject;
 
@@ -95,11 +92,7 @@ export class Scene3d {
       2
     );
 
-    this.light.position.z = this.camera.position.z;
-
     this.light.add(light1, light2, light3);
-
-    this.scene.add(this.light);
   }
 
   createPointLight(position, color, intensity, distance, decay) {
@@ -140,8 +133,6 @@ export class Scene3d {
 
   update() {
     requestAnimationFrame(this.update);
-
-    this.controls.update();
 
     this.render();
 

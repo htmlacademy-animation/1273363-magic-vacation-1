@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { scene } from "./initAnimationScreen";
+import {infrastructure} from "./initAnimationScreen";
 import vertexShader from "../../shader/vertexShader.glsl";
 import fragmentShader from "../../shader/fragmentShader.glsl";
 
@@ -22,7 +22,7 @@ export const plainMeshController = {
       return;
     }
 
-    scene.scene.children.forEach((mesh) => {
+    infrastructure.scene.children.forEach((mesh) => {
       if (!mesh.isMesh) {
         return;
       }
@@ -39,11 +39,11 @@ export const plainMeshController = {
 
     this.prevStoryTheme = index;
 
-    scene.render();
+    infrastructure.render();
   },
 
   clearScene() {
-    scene.clearScene();
+    infrastructure.clearScene();
   },
 
   async addScreenMesh(name) {
@@ -55,7 +55,7 @@ export const plainMeshController = {
       images.map(
         (img) =>
           new Promise((resolve) => {
-            scene.textureLoader.load(
+            infrastructure.textureLoader.load(
               `./img/module-5/scenes-textures/${img}.png`,
               (texture) => {
                 const material = this.getEffectMaterial(texture);
@@ -63,7 +63,7 @@ export const plainMeshController = {
                 const planeMesh = new THREE.Mesh(planeGeometry, material);
                 planeMesh.name = img;
 
-                scene.addSceneObject(planeMesh);
+                infrastructure.addSceneObject(planeMesh);
 
                 resolve();
               }
@@ -121,7 +121,7 @@ export const plainMeshController = {
   setMeshTransformations(mesh, index) {
     const transformations = [];
 
-    scene.clearAnimations();
+    infrastructure.clearAnimations();
 
     if (index === 1) {
       const bubble1 = mesh.material.uniforms.bubble1.value;
@@ -158,6 +158,6 @@ export const plainMeshController = {
       transformations.push(transformationCallback);
     }
 
-    scene.addAnimations(...transformations);
+    infrastructure.addAnimations(...transformations);
   },
 };
