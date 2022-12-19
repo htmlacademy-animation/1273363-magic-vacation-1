@@ -48,7 +48,7 @@ export class Scene3d {
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setClearColor(0x5f458c, 0);
+    this.renderer.setClearColor(0x5f458c, 1);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
     if (window.innerWidth > 768) {
@@ -58,6 +58,8 @@ export class Scene3d {
 
   initLight() {
     this.light = new THREE.Group();
+    this.directionalLight = new THREE.Group();
+    this.pointerLight = new THREE.Group();
 
     const color = new THREE.Color("rgb(255,255,255)");
     const intensity = 0.84;
@@ -92,7 +94,10 @@ export class Scene3d {
       2
     );
 
-    this.light.add(light1, light2, light3);
+    this.directionalLight.add(light1);
+    this.pointerLight.add(light2, light3);
+
+    this.light.add(this.directionalLight);
   }
 
   createPointLight(position, color, intensity, distance, decay) {
@@ -106,7 +111,7 @@ export class Scene3d {
     light.castShadow = true;
     light.shadow.mapSize.width = 512;
     light.shadow.mapSize.height = 512;
-    light.shadow.camera.near = 0.5;
+    light.shadow.camera.near = 100;
     light.shadow.camera.far = distance;
 
     light.position.set(position[0], position[1], position[2]);

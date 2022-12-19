@@ -10,7 +10,7 @@ import social from "./modules/social.js";
 import FullPageScroll from "./modules/full-page-scroll";
 import "./modules/accent-typography.js";
 import "./3d-animations/initAnimationScreen";
-import {SceneController} from './3d-animations/SceneController';
+import {SceneController} from "./3d-animations/SceneController";
 
 // init modules
 mobileHeight();
@@ -24,11 +24,13 @@ social();
 
 export const sceneController = new SceneController();
 
-const fullPageScroll = new FullPageScroll();
-fullPageScroll.init();
+window.addEventListener(`load`, async () => {
+  const isIntroPage = !window.location.hash || window.location.hash === "#top";
 
-window.addEventListener(`load`, () => {
-  setTimeout(()=>{
-    document.body.classList.add(`loaded`);
-  }, 2000)
+  await sceneController.initScene(isIntroPage ? 0 : 1);
+
+  const fullPageScroll = new FullPageScroll();
+  fullPageScroll.init();
+
+  document.body.classList.add(`loaded`);
 });
