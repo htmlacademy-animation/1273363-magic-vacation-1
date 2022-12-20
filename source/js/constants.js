@@ -51,3 +51,5 @@ export const EXTRUDE_SETTINGS = {
 export const MESH_NAMES = {
   SaturnRing: 'SaturnRing'
 };
+
+export const BACKGROUND_AXIS_POSITION_Z = 3270;
