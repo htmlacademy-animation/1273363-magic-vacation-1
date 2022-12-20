@@ -40,20 +40,18 @@ export class RoomOneScene extends RoomScene {
     this.staticOutput = {
       name: OBJECT_ELEMENTS.staticOutput1,
     };
-
-    this.constructChildren();
   }
 
-  constructChildren() {
-    super.constructChildren();
+  async constructChildren() {
+    await super.constructChildren();
 
-    this.addFlower();
+    await this.addFlower();
     this.addSaturn();
     this.addCarpet();
-    this.addDog();
+    await this.addDog();
   }
 
-  addFlower() {
+  async addFlower() {
     const config = {
       name: SVG_ELEMENTS.flower,
       extrude: {
@@ -81,9 +79,9 @@ export class RoomOneScene extends RoomScene {
       },
     };
 
-    this.pageSceneCreator.createExtrudedSvgMesh(config, (obj) => {
-      this.addObject(obj);
-    });
+    const obj = await this.pageSceneCreator.createExtrudedSvgMesh(config);
+
+    this.addObject(obj);
   }
 
   addSaturn() {
@@ -114,7 +112,8 @@ export class RoomOneScene extends RoomScene {
 
     const bounceAngle = 1;
 
-    this.animationManager.addAnimations(
+    this.animationManager.addRoomsPageAnimations(
+      0,
       new Animation({
         func: (_, { startTime, currentTime }) => {
           group.rotation.z =
@@ -131,7 +130,8 @@ export class RoomOneScene extends RoomScene {
 
     saturn.traverse((obj) => {
       if (obj.isMesh && obj.name === MESH_NAMES.SaturnRing) {
-        this.animationManager.addAnimations(
+        this.animationManager.addRoomsPageAnimations(
+          0,
           new Animation({
             func: (_, { startTime, currentTime }) => {
               obj.rotation.x =
@@ -161,44 +161,41 @@ export class RoomOneScene extends RoomScene {
     this.addObject(carpet);
   }
 
-  addDog() {
-    this.pageSceneCreator.createObjectMesh(
-      {
-        name: OBJECT_ELEMENTS.dog,
-        transform: {
-          position: {
-            x: 480,
-            z: 420,
-          },
-          rotation: {
-            y: 1.1,
-          },
-          scale: 1,
+  async addDog() {
+    const dog = await this.pageSceneCreator.createObjectMesh({
+      name: OBJECT_ELEMENTS.dog,
+      transform: {
+        position: {
+          x: 480,
+          z: 420,
         },
+        rotation: {
+          y: 1.1,
+        },
+        scale: 1,
       },
-      (dog) => {
-        dog.traverse((obj) => {
-          if (obj.name === "Tail") {
-            this.animationManager.addAnimations(
-              new Animation({
-                func: (_, {startTime, currentTime}) => {
-                  const time =
-                    ((currentTime - startTime) / 70) % (Math.PI * 6.5);
-                  if (time > 0 && time < Math.PI) {
-                    obj.rotation.x = (degreesToRadians(30) * time) / Math.PI;
-                  } else {
-                    obj.rotation.x = -degreesToRadians(30) * Math.cos(time);
-                  }
-                },
-                duration: "infinite",
-                easing: easeLinear,
-              })
-            );
-          }
-        });
+    });
 
-        this.addObject(dog);
+    dog.traverse((obj) => {
+      if (obj.name === "Tail") {
+        this.animationManager.addRoomsPageAnimations(
+          0,
+          new Animation({
+            func: (_, { startTime, currentTime }) => {
+              const time = ((currentTime - startTime) / 70) % (Math.PI * 6.5);
+              if (time > 0 && time < Math.PI) {
+                obj.rotation.x = (degreesToRadians(30) * time) / Math.PI;
+              } else {
+                obj.rotation.x = -degreesToRadians(30) * Math.cos(time);
+              }
+            },
+            duration: "infinite",
+            easing: easeLinear,
+          })
+        );
       }
-    );
+    });
+
+    this.addObject(dog);
   }
 }
