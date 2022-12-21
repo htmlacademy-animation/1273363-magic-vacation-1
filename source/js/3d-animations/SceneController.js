@@ -3,7 +3,12 @@ import {LatheGeometryCreator} from "./creators/LatheGeometryCreator";
 import {MaterialCreator} from "./creators/MaterialCreator";
 import {MainPageScene} from "./scenes/main-page/MainPageScene";
 import {SvgPathLoader} from "./loaders/SvgPathLoader";
-import {EXTRUDE_SETTINGS, OBJECT_ELEMENTS, SVG_ELEMENTS} from "../constants";
+import {
+  BACKGROUND_AXIS_POSITION_Z,
+  EXTRUDE_SETTINGS,
+  OBJECT_ELEMENTS,
+  SVG_ELEMENTS,
+} from "../constants";
 import {ExtrudeSvgCreator} from "./creators/ExtrudeSvgCreator";
 import {ObjectsCreator} from "./creators/ObjectCreator";
 import {RoomsPageScene} from "./scenes/room-page/RoomsPageScene";
@@ -12,8 +17,13 @@ import {PageSceneCreator} from "./scenes/PageSceneCreator";
 import {AnimationManager} from "./controllers/AnimationManager";
 import {CameraRig} from "./rigs/CameraRig/CameraRig";
 import {createObjectTransformAnimation} from "./creators/animationCreators";
-import {easeInCubic, easeInOutSine, easeOutCubic} from "../helpers/easing";
+import {
+  easeInCubic,
+  easeInOutSine,
+  easeOutCubic,
+} from "../helpers/easing";
 import * as THREE from "three";
+import {degreesToRadians} from "./utils/degreesToRadians";
 
 const materialCreator = new MaterialCreator();
 const latheGeometryCreator = new LatheGeometryCreator();
@@ -36,9 +46,13 @@ const animationManager = new AnimationManager();
 
 export class SceneController {
   constructor() {
-    this.previousRoomSceneIndex = 1;
+    this.previousRoomIndex = 1;
     this.isSuitcaseAppear = false;
     this.isMainPageObjectsAppear = false;
+
+    this.mouseEventHandlerTick = null;
+
+    this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
   }
 
   async initScene(startSceneIndex) {
@@ -63,6 +77,8 @@ export class SceneController {
 
     await this.mainPageScene.constructChildren();
 
+    this.mainPageScene.position.z = -BACKGROUND_AXIS_POSITION_Z;
+
     infrastructure.addSceneObject(this.mainPageScene);
   }
 
@@ -74,7 +90,7 @@ export class SceneController {
 
     await this.roomsPageScene.constructChildren();
 
-    this.roomsPageScene.position.set(0, -700, -3270);
+    this.roomsPageScene.position.set(0, -800, -BACKGROUND_AXIS_POSITION_Z);
 
     infrastructure.addSceneObject(this.roomsPageScene);
   }
@@ -193,14 +209,29 @@ export class SceneController {
     this.cameraRig.addObjectToRotationAxis(this.suitcase);
 
     const pointerLight = new THREE.Group();
-    pointerLight.position.z = -CameraRig.getMinDepth();
+    pointerLight.position.z = 2250;
     pointerLight.add(infrastructure.pointerLight);
     this.cameraRig.addObjectToRotationAxis(pointerLight);
     infrastructure.scene.add(this.cameraRig);
   }
 
   showMainScene() {
-    this.cameraRig.changeStateTo(CameraRig.getCameraRigStageState(0));
+    window.removeEventListener("mousemove", this.mouseMoveHandler);
+
+    if (this.mouseEventHandlerTick) {
+      window.cancelAnimationFrame(this.mouseEventHandlerTick);
+    }
+
+    this.mainPageScene.setRotationYAxis(
+      ((this.previousRoomIndex - 1) * Math.PI) / 2
+    );
+
+    this.cameraRig.changeStateTo(
+      CameraRig.getCameraRigStageState(0, this.previousRoomIndex),
+      () => {
+        window.addEventListener("mousemove", this.mouseMoveHandler);
+      }
+    );
 
     setTimeout(() => {
       if (!this.isMainPageObjectsAppear) {
@@ -210,17 +241,26 @@ export class SceneController {
     }, 500);
   }
 
-  showRoomScene(index) {
-    if (typeof index === "number") {
-      this.previousRoomSceneIndex = index;
+  showRoomScene(nextRoomIndex) {
+    window.removeEventListener("mousemove", this.mouseMoveHandler);
+
+    if (this.mouseEventHandlerTick) {
+      window.cancelAnimationFrame(this.mouseEventHandlerTick);
+    }
+
+    if (typeof nextRoomIndex === "number") {
+      this.previousRoomIndex = nextRoomIndex;
     }
 
     this.cameraRig.changeStateTo(
-      CameraRig.getCameraRigStageState(index || this.previousRoomSceneIndex)
+      CameraRig.getCameraRigStageState(nextRoomIndex, this.previousRoomIndex),
+      () => {
+        window.addEventListener("mousemove", this.mouseMoveHandler);
+      }
     );
 
     animationManager.startRoomAnimations(
-      (index || this.previousRoomSceneIndex) - 1
+      (nextRoomIndex || this.previousRoomIndex) - 1
     );
 
     setTimeout(() => {
@@ -229,5 +269,46 @@ export class SceneController {
         this.isSuitcaseAppear = true;
       }
     }, 800);
+  }
+
+  mouseMoveHandler(ev) {
+    if (this.mouseEventHandlerTick) {
+      window.cancelAnimationFrame(this.mouseEventHandlerTick);
+    }
+
+    const windowHeight = window.innerHeight;
+
+    const targetMouseYPosition = (2 * (windowHeight / 2 - ev.y)) / windowHeight;
+
+    const targetPitchRotation = degreesToRadians(4 * targetMouseYPosition);
+
+    let currentPitchRotation = this.cameraRig.pitchRotation;
+
+    const movePitchRotationCloserToTarget = (increase) => {
+      if (
+        (increase && currentPitchRotation > targetPitchRotation) ||
+        (!increase && currentPitchRotation < targetPitchRotation)
+      ) {
+        window.cancelAnimationFrame(this.mouseEventHandlerTick);
+        return;
+      }
+
+      if (increase) {
+        currentPitchRotation += 0.001;
+      } else {
+        currentPitchRotation -= 0.001;
+      }
+
+      this.cameraRig.pitchRotation = currentPitchRotation;
+      this.cameraRig.invalidate();
+      //
+      this.mouseEventHandlerTick = requestAnimationFrame(() => {
+        movePitchRotationCloserToTarget(increase);
+      });
+    };
+
+    movePitchRotationCloserToTarget(
+      targetPitchRotation > this.cameraRig.pitchRotation
+    );
   }
 }

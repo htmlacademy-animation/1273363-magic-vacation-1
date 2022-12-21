@@ -1,5 +1,10 @@
 import * as THREE from "three";
-import {MATERIAL_TYPE, OBJECT_ELEMENTS, SVG_ELEMENTS} from "../../../constants";
+import {
+  BACKGROUND_AXIS_POSITION_Z,
+  MATERIAL_TYPE,
+  OBJECT_ELEMENTS,
+  SVG_ELEMENTS
+} from "../../../constants";
 import {MaterialCreator} from "../../creators/MaterialCreator";
 import {Saturn} from "../../mesh-complex-objects/Saturn";
 import {createBounceAnimation, createObjectTransformAnimation} from "../../creators/animationCreators";
@@ -219,6 +224,8 @@ export class MainPageScene extends THREE.Group {
         },
       },
     ];
+
+    this.mainPageGroup = new THREE.Group();
   }
 
   async constructChildren() {
@@ -229,6 +236,14 @@ export class MainPageScene extends THREE.Group {
     this.addSaturn();
 
     await this.addAeroplaneRig();
+
+    this.add(this.mainPageGroup);
+
+    this.mainPageGroup.position.z = BACKGROUND_AXIS_POSITION_Z;
+  }
+
+  setRotationYAxis(angle) {
+    this.rotation.y = angle;
   }
 
   async addAeroplaneRig() {
@@ -368,7 +383,7 @@ export class MainPageScene extends THREE.Group {
   }
 
   addMesh(mesh) {
-    this.add(mesh);
+    this.mainPageGroup.add(mesh);
   }
 
   addSuitCaseAnimation(suitcase) {

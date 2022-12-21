@@ -97,7 +97,9 @@ export class Scene3d {
     this.directionalLight.add(light1);
     this.pointerLight.add(light2, light3);
 
-    this.light.add(this.directionalLight);
+    const light4 = new THREE.AmbientLight('#fff', 0.05);
+
+    this.light.add(this.directionalLight, light4);
   }
 
   createPointLight(position, color, intensity, distance, decay) {
@@ -109,14 +111,13 @@ export class Scene3d {
     );
 
     light.castShadow = true;
-    light.shadow.mapSize.width = 512;
-    light.shadow.mapSize.height = 512;
+    light.shadow.mapSize.width = 1024;
+    light.shadow.mapSize.height = 1024;
+    light.shadow.bias = -0.005;
     light.shadow.camera.near = 100;
     light.shadow.camera.far = distance;
 
     light.position.set(position[0], position[1], position[2]);
-
-    this.scene.add(new THREE.PointLightHelper(light, 10));
 
     return light;
   }
