@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {degreesToRadians} from "../../utils/degreesToRadians";
-import Animation from "../../../Animation/Animation";
+import Animation from "../../../Animation/animation";
 import {easeInOutSine} from "../../../helpers/easing";
 import {AnimationController} from "./AnimationController";
 import {BACKGROUND_AXIS_POSITION_Z} from "../../../constants";
