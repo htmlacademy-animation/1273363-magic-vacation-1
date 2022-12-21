@@ -5,73 +5,14 @@ import {easeInOutSine} from "../../../helpers/easing";
 import {AnimationController} from "./AnimationController";
 import {BACKGROUND_AXIS_POSITION_Z} from "../../../constants";
 
-export class CameraRig extends THREE.Group {
-  static getCameraRigStageState(nextSceneIndex, prevRoomIndex = 1) {
-    if (nextSceneIndex === 0) {
-      return {
-        newStateParams: {
-          index: nextSceneIndex,
-          depth: CameraRig.getMaxDepth(),
-          rotationAxisYAngle: ((prevRoomIndex - 1) * Math.PI) / 2,
-          horizonIncline: 0,
-          pitchRotation: 0,
-          pitchDepth: 1405,
-        },
-        animationParams: {
-          duration: 1500,
-          easing: easeInOutSine,
-        },
-      };
-    }
-
-    if (typeof nextSceneIndex !== "number") {
-      return {
-        newStateParams: {
-          index: prevRoomIndex,
-          depth: CameraRig.getMinDepth(),
-          rotationAxisYAngle: ((prevRoomIndex - 1) * Math.PI) / 2,
-          horizonIncline: -degreesToRadians(15),
-          pitchRotation: 0,
-          pitchDepth: 2200,
-        },
-        animationParams: {
-          duration: 1500,
-          easing: easeInOutSine,
-        },
-      };
-    }
-
-    if ([1, 2, 3, 4].includes(nextSceneIndex)) {
-      return {
-        newStateParams: {
-          index: nextSceneIndex,
-          depth: CameraRig.getMinDepth(),
-          rotationAxisYAngle: ((nextSceneIndex - 1) * Math.PI) / 2,
-          horizonIncline: -degreesToRadians(15),
-          pitchDepth: 2200,
-        },
-        animationParams: {
-          duration: 700,
-          easing: easeInOutSine,
-        },
-      };
-    }
-
-    return { newStateParams: {}, animationParams: {} };
-  }
-
-  static getMinDepth() {
-    return 0;
-  }
-
-  static getMaxDepth() {
-    return -BACKGROUND_AXIS_POSITION_Z;
-  }
-
-  constructor(stateParameters, sceneController) {
+export class CameraRigDesktop extends THREE.Group {
+  constructor(startSceneIndex, sceneController) {
     super();
 
-    this.stateParameters = stateParameters.newStateParams;
+    this.name = "CameraRig";
+
+    this.stateParameters =
+      this.getCameraRigStageState(startSceneIndex).newStateParams;
 
     this.keyholeCover = sceneController.mainPageScene.children[0].children.find(
       ({ name }) => name === "keyholeCover"
@@ -94,7 +35,7 @@ export class CameraRig extends THREE.Group {
 
     this.constructRigElements();
 
-    this.position.z = CameraRig.getMaxDepth();
+    this.position.z = this.getMaxDepth();
 
     // Set Rig to the initial state
     this.invalidate();
@@ -110,7 +51,6 @@ export class CameraRig extends THREE.Group {
     // Connect
     this.add(rotationAxis);
     rotationAxis.add(depthTrack);
-    depthTrack.add(pitchAxis);
     depthTrack.add(pitchAxis);
     pitchAxis.add(cameraNull);
 
@@ -135,8 +75,8 @@ export class CameraRig extends THREE.Group {
     if (this.keyholeCover) {
       let opacity;
 
-      const fullOpacityBreakpoint = -2200;
-      const noOpacityBreakpoint = -1800;
+      const fullOpacityBreakpoint = -2000;
+      const noOpacityBreakpoint = -500;
 
       if (value < fullOpacityBreakpoint) {
         opacity = 1;
@@ -274,7 +214,9 @@ export class CameraRig extends THREE.Group {
           if (typeof newStateParams.pitchRotation === "number") {
             this.pitchRotation =
               initPitchRotation +
-              (newStateParams.pitchRotation - initPitchRotation) * progress;
+              (this.getMaxPitchRotation() * newStateParams.pitchRotation -
+                initPitchRotation) *
+              progress;
           }
 
           if (typeof newStateParams.pitchDepth === "number") {
@@ -296,5 +238,74 @@ export class CameraRig extends THREE.Group {
         },
       })
     );
+  }
+
+  getCameraRigStageState(nextSceneIndex, prevRoomIndex = 1) {
+    // переход из комнаты на главную
+    if (nextSceneIndex === 0) {
+      return {
+        newStateParams: {
+          index: nextSceneIndex,
+          depth: this.getMaxDepth(),
+          rotationAxisYAngle: ((prevRoomIndex - 1) * Math.PI) / 2,
+          horizonIncline: 0,
+          pitchRotation: 0,
+          pitchDepth: 1405,
+        },
+        animationParams: {
+          duration: 1500,
+          easing: easeInOutSine,
+        },
+      };
+    }
+
+    // переход с главной к комнате
+    if (typeof nextSceneIndex !== "number") {
+      return {
+        newStateParams: {
+          index: prevRoomIndex,
+          depth: this.getMinDepth(),
+          rotationAxisYAngle: ((prevRoomIndex - 1) * Math.PI) / 2,
+          horizonIncline: -degreesToRadians(15),
+          pitchRotation: 0,
+          pitchDepth: 2200,
+        },
+        animationParams: {
+          duration: 1500,
+          easing: easeInOutSine,
+        },
+      };
+    }
+
+    // переход между комнатами
+    if ([1, 2, 3, 4].includes(nextSceneIndex)) {
+      return {
+        newStateParams: {
+          index: nextSceneIndex,
+          depth: this.getMinDepth(),
+          rotationAxisYAngle: ((nextSceneIndex - 1) * Math.PI) / 2,
+          horizonIncline: -degreesToRadians(15),
+          pitchDepth: 2200,
+        },
+        animationParams: {
+          duration: 700,
+          easing: easeInOutSine,
+        },
+      };
+    }
+
+    return { newStateParams: {}, animationParams: {} };
+  }
+
+  getMinDepth() {
+    return 0;
+  }
+
+  getMaxDepth() {
+    return -BACKGROUND_AXIS_POSITION_Z;
+  }
+
+  getMaxPitchRotation() {
+    return 4;
   }
 }

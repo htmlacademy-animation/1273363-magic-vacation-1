@@ -4,6 +4,7 @@ export class Scene3d {
   constructor(config = {}) {
     this.config = config;
     this.meshObjects = new Set();
+    this.resizeInProgress = false;
     this.canvasElement = document.getElementById(config.elementId);
 
     this.initRenderer();
@@ -12,14 +13,20 @@ export class Scene3d {
     this.initLight();
     this.initTextureLoader();
 
-    window.addEventListener("resize", this.onWindowResize.bind(this));
     this.update = this.update.bind(this);
+    this.resize = this.resize.bind(this);
 
     this.render();
 
     if (config.enableAnimation) {
       this.update();
     }
+
+    this.resize();
+
+    window.addEventListener("resize", () => {
+      this.resizeInProgress = true;
+    });
   }
 
   initScene() {
@@ -49,7 +56,7 @@ export class Scene3d {
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setClearColor(0x5f458c, 1);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     if (window.innerWidth > 768) {
       this.renderer.shadowMap.enabled = true;
@@ -97,7 +104,7 @@ export class Scene3d {
     this.directionalLight.add(light1);
     this.pointerLight.add(light2, light3);
 
-    const light4 = new THREE.AmbientLight('#fff', 0.05);
+    const light4 = new THREE.AmbientLight("#fff", 0.05);
 
     this.light.add(this.directionalLight, light4);
   }
@@ -126,27 +133,24 @@ export class Scene3d {
     this.textureLoader = new THREE.TextureLoader();
   }
 
-  onWindowResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-
   render() {
     this.renderer.render(this.scene, this.camera);
   }
 
   update() {
-    requestAnimationFrame(this.update);
+    if (this.resizeInProgress) this.resize();
 
     this.render();
+
+    this.resizeInProgress = false;
 
     if (this.config.stats) {
       this.config.stats.forEach((stats) => {
         stats.update();
       });
     }
+
+    requestAnimationFrame(this.update);
   };
 
   clearScene() {
@@ -171,5 +175,24 @@ export class Scene3d {
 
     this.meshObjects.add(...meshObjects);
     this.scene.add(...meshObjects);
+  }
+
+  resize() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    if (height < 1 || width < 1) return;
+
+    // camera resize
+    if (width > height) {
+      this.camera.fov = 35;
+    } else {
+      this.camera.fov = (32 * height) / Math.min(width * 1.3, height);
+    }
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+
+    // renderer resize
+    this.renderer.setSize(width, height);
   }
 }

@@ -1,4 +1,4 @@
-import { UIElementController } from "./controllers";
+import {UIElementController} from "./controllers";
 
 export class NumbersGrowAnimation {
   constructor(element, to, duration = 800, fps = 12) {
@@ -13,8 +13,6 @@ export class NumbersGrowAnimation {
     this.prevTickTime = this.timeStart;
 
     this.tick = this.tick.bind(this);
-
-    this.startTransition();
   }
 
   startTransition() {
@@ -29,7 +27,8 @@ export class NumbersGrowAnimation {
     }
 
     if (now - this.prevTickTime < this.interval) {
-      return requestAnimationFrame(this.tick);
+      requestAnimationFrame(this.tick);
+      return;
     }
 
     let newValue =
