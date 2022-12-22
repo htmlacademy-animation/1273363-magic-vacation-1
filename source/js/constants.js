@@ -54,3 +54,5 @@ export const MESH_NAMES = {
 };
 
 export const BACKGROUND_AXIS_POSITION_Z = 3270;
+
+export const isDesktop = window.innerWidth > 768;

@@ -1,9 +1,13 @@
 import * as THREE from "three";
 import {RoadCustomMaterial} from "../CustomMaterials/RoadCustomMaterial";
 import {CarpetCustomMaterial} from "../CustomMaterials/CarpetCustomMaterial";
-import {MATERIAL_TYPE} from "../../constants";
+import {isDesktop, MATERIAL_TYPE} from "../../constants";
 
 export class MaterialCreator {
+  constructor(textureLoader) {
+    this.textureLoader = textureLoader;
+  }
+
   create(materialType, config) {
     switch (materialType) {
       case MATERIAL_TYPE.SoftMaterial: {
@@ -46,15 +50,38 @@ export class MaterialCreator {
   }
 
   createSoft(config) {
-    return new THREE.MeshStandardMaterial(config);
+    if (isDesktop) {
+      return new THREE.MeshStandardMaterial(config);
+    } else {
+      return new THREE.MeshMatcapMaterial({
+        matcap: this.textureLoader.load("./img/module-7/matcaps/Soft-Mat.png"),
+        ...config,
+      });
+    }
   }
 
   createBasic(config) {
-    return new THREE.MeshStandardMaterial(config);
+    if (isDesktop) {
+      return new THREE.MeshStandardMaterial(config);
+    } else {
+      return new THREE.MeshMatcapMaterial({
+        matcap: this.textureLoader.load("./img/module-7/matcaps/Basic-Mat.png"),
+        ...config,
+      });
+    }
   }
 
   createStrong(config) {
-    return new THREE.MeshPhongMaterial(config);
+    if (isDesktop) {
+      return new THREE.MeshPhongMaterial(config);
+    } else {
+      return new THREE.MeshMatcapMaterial({
+        matcap: this.textureLoader.load(
+          "./img/module-7/matcaps/Strong-Mat-SnowColor.png"
+        ),
+        ...config,
+      });
+    }
   }
 
   createRoadMaterial(config) {

@@ -26,7 +26,8 @@ import * as THREE from "three";
 import {degreesToRadians} from "./utils/degreesToRadians";
 import {CameraRigMobile} from "./rigs/CameraRig/CameraRigMobile";
 
-const materialCreator = new MaterialCreator();
+const textureLoader = new THREE.TextureLoader();
+const materialCreator = new MaterialCreator(textureLoader);
 const latheGeometryCreator = new LatheGeometryCreator();
 const svgShapeLoader = new SvgPathLoader(SVG_ELEMENTS);
 const extrudeSvgCreator = new ExtrudeSvgCreator(
