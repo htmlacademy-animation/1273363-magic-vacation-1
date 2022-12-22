@@ -13,15 +13,66 @@ class PrizesAnimation {
     this.journeyNum = this.journeyItem.querySelector(".prizes__desc > b");
     this.casesNum = this.casesItem.querySelector(".prizes__desc > b");
     this.codesNum = this.codesItem.querySelector(".prizes__desc > b");
+
+    this.primaryAwardSvgObjectIsLoaded = false;
+    this.secondaryAwardSvgObjectIsLoaded = false;
+    this.additionalAwardSvgObjectIsLoaded = false;
+
+    document.getElementById("primaryAward").onload = ({ target }) => {
+      this.primaryAwardSvgObject = target;
+      this.primaryAwardSvgObjectIsLoaded = true;
+    };
+    document.getElementById("secondaryAward").onload = ({ target }) => {
+      this.secondaryAwardSvgObject = target;
+      this.secondaryAwardSvgObjectIsLoaded = true;
+    };
+
+    document.getElementById("additionalAward").onload = ({ target }) => {
+      this.additionalAwardSvgObject = target;
+      this.additionalAwardSvgObjectIsLoaded = true;
+    };
+
+    this.start = this.start.bind(this);
+
+    this.checkLoadingStatusTick = null;
   }
 
   start() {
+    if (
+      this.primaryAwardSvgObjectIsLoaded &&
+      this.secondaryAwardSvgObjectIsLoaded &&
+      this.additionalAwardSvgObjectIsLoaded
+    ) {
+      if (this.checkLoadingStatusTick) {
+        window.cancelAnimationFrame(this.checkLoadingStatusTick);
+      }
+
+      this.startSvgAnimation();
+      return;
+    }
+
+    this.checkLoadingStatusTick = window.requestAnimationFrame(this.start);
+  }
+
+  startSvgAnimation() {
+    this.startPrimaryPrizeAnimation();
+
+    setTimeout(() => {
+      this.startSecondaryPrizeAnimation();
+    }, 3800);
+
+    setTimeout(() => {
+      this.startAdditionalPrizeAnimation();
+    }, 6200);
+  }
+
+  startPrimaryPrizeAnimation() {
     if (this.journeyItem.classList.contains("active")) {
       return;
     }
 
     // анимация первого приза
-    const svgDoc = document.getElementById("primaryAward").contentDocument;
+    const svgDoc = this.primaryAwardSvgObject.contentDocument;
 
     if (!svgDoc) {
       return;
@@ -35,41 +86,57 @@ class PrizesAnimation {
 
       setTimeout(() => {
         this.journeyDesc.classList.add("active");
-        new NumbersGrowAnimation(this.journeyNum, 3);
+        const numbersGrowAnimation = new NumbersGrowAnimation(
+          this.journeyNum,
+          3
+        );
+        numbersGrowAnimation.startTransition();
       }, 1000);
     }
+  }
 
-    // анимация второго приза
-    setTimeout(() => {
-      const svgDoc = document.getElementById("secondaryAward").contentDocument;
-      const animationTag = svgDoc.getElementById("casesAnimation");
+  startSecondaryPrizeAnimation() {
+    if (this.casesItem.classList.contains("active")) {
+      return;
+    }
 
-      if (animationTag) {
-        this.casesItem.classList.add("active");
-        animationTag.beginElement();
+    const svgDoc = this.secondaryAwardSvgObject.contentDocument;
+    const animationTag = svgDoc.getElementById("casesAnimation");
 
-        setTimeout(() => {
-          this.casesDesc.classList.add("active");
-          new NumbersGrowAnimation(this.casesNum, 7);
-        }, 1000);
-      }
-    }, 3800);
+    if (animationTag) {
+      this.casesItem.classList.add("active");
+      animationTag.beginElement();
 
-    // анимация дополнительного приза
-    setTimeout(() => {
-      const svgDoc = document.getElementById("additionalAward").contentDocument;
-      const animationTag = svgDoc.getElementById("suitcaseAnimation");
+      setTimeout(() => {
+        this.casesDesc.classList.add("active");
 
-      if (animationTag) {
-        this.codesItem.classList.add("active");
-        animationTag.beginElement();
+        const numbersGrowAnimation = new NumbersGrowAnimation(this.casesNum, 7);
+        numbersGrowAnimation.startTransition();
+      }, 1000);
+    }
+  }
 
-        setTimeout(() => {
-          this.codesDesc.classList.add("active");
-          new NumbersGrowAnimation(this.codesNum, 900);
-        }, 1000);
-      }
-    }, 6200);
+  startAdditionalPrizeAnimation() {
+    if (this.codesItem.classList.contains("active")) {
+      return;
+    }
+
+    const svgDoc = this.additionalAwardSvgObject.contentDocument;
+    const animationTag = svgDoc.getElementById("suitcaseAnimation");
+
+    if (animationTag) {
+      this.codesItem.classList.add("active");
+      animationTag.beginElement();
+
+      setTimeout(() => {
+        this.codesDesc.classList.add("active");
+        const numbersGrowAnimation = new NumbersGrowAnimation(
+          this.codesNum,
+          900
+        );
+        numbersGrowAnimation.startTransition();
+      }, 1000);
+    }
   }
 }
 

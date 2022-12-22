@@ -40,7 +40,8 @@
 
   @media (max-width: $tablet) and (orientation: portrait) {
     max-width: 100%;
-    font-size: 3.6rem;
+    font-size: 3.4rem;
+    line-height: 0.5;
   }
 
   @media (max-width: $tablet) and (orientation: landscape) {
@@ -49,6 +50,7 @@
 
   @media (max-width: $mobile) and (orientation: landscape) {
     font-size: 5rem;
+    line-height: 0.6;
   }
 }
 

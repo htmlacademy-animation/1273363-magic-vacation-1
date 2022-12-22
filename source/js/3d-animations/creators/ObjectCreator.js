@@ -12,7 +12,7 @@ export class ObjectsCreator {
 
   async create(name) {
     if (this.objects[name]) {
-      return this.objects[name].clone()
+      return this.objects[name].clone();
     }
 
     const config = ObjectsCreator.objectsConfigMap[name];
@@ -23,6 +23,8 @@ export class ObjectsCreator {
 
     return new Promise((resolve) => {
       const onComplete = (obj3d) => {
+        obj3d.name = name;
+
         this.objects[name] = obj3d;
 
         resolve(obj3d);

@@ -2,13 +2,21 @@ import * as THREE from "three";
 import {
   BACKGROUND_AXIS_POSITION_Z,
   MATERIAL_TYPE,
+  MESH_NAMES,
   OBJECT_ELEMENTS,
   SVG_ELEMENTS
 } from "../../../constants";
 import {MaterialCreator} from "../../creators/MaterialCreator";
 import {Saturn} from "../../mesh-complex-objects/Saturn";
-import {createBounceAnimation, createObjectTransformAnimation} from "../../creators/animationCreators";
-import {easeInOutSine, easeOutCubic, easeOutExpo} from "../../../helpers/easing";
+import {
+  createBounceAnimation,
+  createObjectTransformAnimation
+} from "../../creators/animationCreators";
+import {
+  easeInOutSine,
+  easeOutCubic,
+  easeOutExpo
+} from "../../../helpers/easing";
 import Animation from "../../../Animation/animation";
 import {AirplaneRig} from "../../rigs/AirplaneRig/AirplaneRig";
 import {KeyholeCover} from '../../mesh-complex-objects/KeyholeCover';
@@ -17,6 +25,7 @@ export class MainPageScene extends THREE.Group {
   constructor(pageSceneCreator, animationManager) {
     super();
 
+    this.isPortraitMode = window.innerWidth < window.innerHeight;
     this.pageSceneCreator = pageSceneCreator;
     this.animationManager = animationManager;
 
@@ -62,17 +71,13 @@ export class MainPageScene extends THREE.Group {
         transform: {
           rotation: {
             x: 6.2,
-            y: 0.5,
-            z: 3.6,
+            y: 0,
+            z: 3,
           },
           scale: 0,
         },
         transformAppear: {
-          position: {
-            x: -460,
-            y: 370,
-            z: 140,
-          },
+          position: this.getMeshTransformPositionByName(SVG_ELEMENTS.flamingo),
           rotation: {
             x: 6.2,
             y: 0.5,
@@ -104,11 +109,7 @@ export class MainPageScene extends THREE.Group {
           scale: 0,
         },
         transformAppear: {
-          position: {
-            x: -320,
-            y: -20,
-            z: 90,
-          },
+          position: this.getMeshTransformPositionByName(SVG_ELEMENTS.snowflake),
           rotation: {
             x: 6.1,
             y: 0.7,
@@ -140,11 +141,7 @@ export class MainPageScene extends THREE.Group {
           scale: 0,
         },
         transformAppear: {
-          position: {
-            x: 600,
-            y: 290,
-            z: 100,
-          },
+          position: this.getMeshTransformPositionByName(SVG_ELEMENTS.leaf),
           rotation: {
             x: -0.2,
             y: 2.5,
@@ -176,11 +173,7 @@ export class MainPageScene extends THREE.Group {
           scale: 0,
         },
         transformAppear: {
-          position: {
-            x: 140,
-            y: -260,
-            z: 50,
-          },
+          position: this.getMeshTransformPositionByName(SVG_ELEMENTS.question),
           rotation: {
             x: -0.7,
             y: 3.2,
@@ -204,11 +197,9 @@ export class MainPageScene extends THREE.Group {
           scale: 0,
         },
         transformAppear: {
-          position: {
-            x: -600,
-            y: -240,
-            z: 200,
-          },
+          position: this.getMeshTransformPositionByName(
+            OBJECT_ELEMENTS.watermelon
+          ),
           rotation: {
             x: 0.3,
             y: 3.3,
@@ -226,6 +217,72 @@ export class MainPageScene extends THREE.Group {
     ];
 
     this.mainPageGroup = new THREE.Group();
+
+    this.onResize = this.onResize.bind(this);
+
+    window.addEventListener("resize", this.onResize);
+  }
+
+  onResize() {
+    const isPortraitMode = window.innerWidth < window.innerHeight;
+
+    if (this.isPortraitMode === isPortraitMode) {
+      return;
+    }
+
+    this.isPortraitMode = isPortraitMode;
+
+    this.mainPageGroup.children.forEach((obj) => {
+      const transformPosition = this.getMeshTransformPositionByName(obj.name);
+
+      if (transformPosition) {
+        obj.position.copy(transformPosition);
+      }
+    });
+  }
+
+  getMeshTransformPositionByName(name) {
+    switch (name) {
+      case SVG_ELEMENTS.flamingo:
+        return this.isPortraitMode
+          ? {
+            x: -180,
+            y: 370,
+            z: 140,
+          }
+          : {
+            x: -460,
+            y: 370,
+            z: 140,
+          };
+
+      case SVG_ELEMENTS.snowflake:
+        return this.isPortraitMode
+          ? { x: -160, y: 20, z: 90 }
+          : { x: -320, y: -20, z: 90 };
+
+      case SVG_ELEMENTS.leaf:
+        return this.isPortraitMode
+          ? { x: 250, y: 290, z: 100 }
+          : { x: 600, y: 290, z: 100 };
+
+      case SVG_ELEMENTS.question:
+        return this.isPortraitMode
+          ? { x: 30, y: -330, z: 50 }
+          : { x: 140, y: -310, z: 50 };
+
+      case OBJECT_ELEMENTS.watermelon:
+        return this.isPortraitMode
+          ? { x: -200, y: -240, z: 200 }
+          : { x: -600, y: -240, z: 200 };
+
+      case MESH_NAMES.Saturn:
+        return this.isPortraitMode
+          ? { x: 150, y: -150, z: 140 }
+          : { x: 350, y: -120, z: 140 };
+    }
+
+    return undefined;
   }
 
   async constructChildren() {
@@ -251,7 +308,7 @@ export class MainPageScene extends THREE.Group {
 
     await airplaneRig.constructRig();
 
-    airplaneRig.position.x = 135;
+    airplaneRig.position.x = 100;
 
     const initialFightRadius = airplaneRig.flightRadius;
     const initialFightHeight = airplaneRig.flightHeight;
@@ -281,7 +338,7 @@ export class MainPageScene extends THREE.Group {
               (progress - 0.5) * Math.PI;
 
           airplaneRig.planeIncline =
-            initialPlaneIncline + (progress * Math.PI) / 5;
+            initialPlaneIncline + (progress * Math.PI) / 4.5;
 
           airplaneRig.invalidate(progress);
         },
@@ -357,7 +414,7 @@ export class MainPageScene extends THREE.Group {
       createObjectTransformAnimation(
         saturn,
         {
-          position: { x: 350, y: -120, z: 140 },
+          position: this.getMeshTransformPositionByName(MESH_NAMES.Saturn),
           rotation: { y: 3.6, z: 0 },
           scale: 0.5,
         },
@@ -377,7 +434,7 @@ export class MainPageScene extends THREE.Group {
   addKeyholeCover() {
     const keyholeCover = new KeyholeCover(this.pageSceneCreator);
 
-    keyholeCover.position.set(0, 0, -200);
+    keyholeCover.position.set(0, 0, -700);
 
     this.addMesh(keyholeCover);
   }

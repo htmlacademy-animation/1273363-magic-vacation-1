@@ -9,7 +9,7 @@ import form from "./modules/form.js";
 import social from "./modules/social.js";
 import FullPageScroll from "./modules/full-page-scroll";
 import "./modules/accent-typography.js";
-import "./3d-animations/initAnimationScreen";
+import "./3d-animations/initInfrastructure";
 import {SceneController} from "./3d-animations/SceneController";
 
 // init modules
