@@ -9,14 +9,15 @@ export class RoomsPageScene extends THREE.Group {
     this.animationManager = animationManager;
   }
 
-  async constructChildren() {
-    await this.addRooms();
+  async constructChildren(diceLoader) {
+    await this.addRooms(diceLoader);
   }
 
-  async addRooms() {
+  async addRooms(diceLoader) {
     const roomsComposition = new RoomsComposition(
       this.pageSceneCreator,
-      this.animationManager
+      this.animationManager,
+      diceLoader
     );
 
     await roomsComposition.constructRooms();

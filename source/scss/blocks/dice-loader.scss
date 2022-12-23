@@ -1,0 +1,103 @@
+$diceSize: 150px;
+
+.dice_container {
+  background-color: rgb(49, 42, 71);
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  overflow: hidden;
+  transition: opacity 0.3s linear;
+
+  body.loaded & {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.dice_text {
+  position: relative;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-60%);
+  display: inline-block;
+
+  text-transform: uppercase;
+  font-family: $font-alt;
+  letter-spacing: 0.2rem;
+
+  &:after {
+    content: attr(data-percentage);
+    position: absolute;
+    right: -6rem;
+  }
+}
+
+#dice-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  perspective: 600px;
+  transform-style: preserve-3d;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 5px;
+    background: rgba(0, 0, 30, 0.7);
+    top: $diceSize * 1.2;
+    left: -50px;
+    filter: blur(15px);
+  }
+  .dice {
+    position: absolute;
+    transform-style: preserve-3d;
+    &.child {
+      animation: childRotate 20000ms linear infinite;
+      .dice_list_item {
+        border: 3px solid rgba(0, 0, 0, 1);
+        box-shadow: 0 0 30px 10px rgba(118, 76, 225, 0.6);
+      }
+    }
+    &_list {
+      transform-style: preserve-3d;
+
+      &_item {
+        position: absolute;
+        width: $diceSize;
+        height: $diceSize;
+        background: rgba(255, 255, 255, 0.8);
+        box-sizing: border-box;
+        transform-style: preserve-3d;
+
+        &:nth-child(1) {
+          transform: translate3d(-50%, -50%, $diceSize / 2);
+        }
+        &:nth-child(2) {
+          transform: translate3d(-50%, 0%, 0) rotateX(90deg);
+        }
+        &:nth-child(3) {
+          transform: translate3d(0%, -50%, 0) rotateY(-90deg);
+        }
+        &:nth-child(4) {
+          transform: translate3d(-100%, -50%, 0) rotateY(-90deg);
+        }
+        &:nth-child(5) {
+          transform: translate3d(-50%, -100%, 0) rotateX(90deg);
+        }
+        &:nth-child(6) {
+          transform: translate3d(-50%, -50%, -$diceSize / 2);
+        }
+      }
+    }
+  }
+}
+
+@keyframes childRotate {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) scale3d(0.4, 0.4, 0.4);
+  }
+  100% {
+    transform: rotateX(360 * 10deg) rotateY(360 * 10deg) scale3d(0.4, 0.4, 0.4);
+  }
+}
