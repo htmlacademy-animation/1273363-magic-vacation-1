@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import {isDesktop} from '../constants';
 
 export class Scene3d {
   constructor(config = {}) {
@@ -11,7 +12,6 @@ export class Scene3d {
     this.initScene();
     this.initCamera(config.cameraConfig);
     this.initLight();
-    this.initTextureLoader();
 
     this.update = this.update.bind(this);
     this.resize = this.resize.bind(this);
@@ -58,7 +58,7 @@ export class Scene3d {
     this.renderer.setClearColor(0x5f458c, 1);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    if (window.innerWidth > 768) {
+    if (isDesktop) {
       this.renderer.shadowMap.enabled = true;
     }
   }
@@ -127,10 +127,6 @@ export class Scene3d {
     light.position.set(position[0], position[1], position[2]);
 
     return light;
-  }
-
-  initTextureLoader() {
-    this.textureLoader = new THREE.TextureLoader();
   }
 
   render() {
