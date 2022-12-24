@@ -285,14 +285,18 @@ export class MainPageScene extends THREE.Group {
     return undefined;
   }
 
-  async constructChildren() {
-    await this.addMeshObjects();
-    await this.addExtrudedSvgObjects();
+  async constructChildren(diceLoader) {
+    await this.addMeshObjects(diceLoader);
+    await this.addExtrudedSvgObjects(diceLoader);
     this.addKeyholeCover();
 
     this.addSaturn();
 
+    diceLoader.increasePercentage(5);
+
     await this.addAeroplaneRig();
+
+    diceLoader.increasePercentage(5);
 
     this.add(this.mainPageGroup);
 
@@ -352,20 +356,24 @@ export class MainPageScene extends THREE.Group {
     this.addMesh(airplaneRig);
   }
 
-  async addMeshObjects() {
+  async addMeshObjects(diceLoader) {
     await Promise.all(
       this.meshObjects.map(async (config) => {
         const obj = await this.pageSceneCreator.createObjectMesh(config);
+
+        diceLoader.increasePercentage(5);
 
         this.addObject(config)(obj);
       })
     );
   }
 
-  async addExtrudedSvgObjects() {
+  async addExtrudedSvgObjects(diceLoader) {
     await Promise.all(
       this.meshExtrudedObjects.map(async (config) => {
         const obj = await this.pageSceneCreator.createExtrudedSvgMesh(config);
+
+        diceLoader.increasePercentage(5);
 
         this.addObject(config)(obj);
       })

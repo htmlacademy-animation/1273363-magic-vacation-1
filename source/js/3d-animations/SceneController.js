@@ -26,7 +26,7 @@ import * as THREE from "three";
 import {degreesToRadians} from "./utils/degreesToRadians";
 import {CameraRigMobile} from "./rigs/CameraRig/CameraRigMobile";
 
-const textureLoader = new THREE.TextureLoader();
+export const textureLoader = new THREE.TextureLoader();
 const materialCreator = new MaterialCreator(textureLoader);
 const latheGeometryCreator = new LatheGeometryCreator();
 const svgShapeLoader = new SvgPathLoader(SVG_ELEMENTS);
@@ -47,7 +47,9 @@ const pageSceneCreator = new PageSceneCreator(
 const animationManager = new AnimationManager();
 
 export class SceneController {
-  constructor() {
+  constructor(diceLoader) {
+    this.diceLoader = diceLoader;
+
     this.previousRoomIndex = 1;
     this.isSuitcaseAppear = false;
     this.isMainPageObjectsAppear = false;
@@ -88,7 +90,7 @@ export class SceneController {
   async addMainPageScene() {
     this.mainPageScene = new MainPageScene(pageSceneCreator, animationManager);
 
-    await this.mainPageScene.constructChildren();
+    await this.mainPageScene.constructChildren(this.diceLoader);
 
     this.mainPageScene.position.z = -BACKGROUND_AXIS_POSITION_Z;
 
@@ -101,7 +103,7 @@ export class SceneController {
       animationManager
     );
 
-    await this.roomsPageScene.constructChildren();
+    await this.roomsPageScene.constructChildren(this.diceLoader);
 
     this.roomsPageScene.position.set(0, -800, -BACKGROUND_AXIS_POSITION_Z);
 
@@ -122,6 +124,8 @@ export class SceneController {
         },
       },
     });
+
+    this.diceLoader.increasePercentage(5);
 
     this.suitcase = new THREE.Group();
 

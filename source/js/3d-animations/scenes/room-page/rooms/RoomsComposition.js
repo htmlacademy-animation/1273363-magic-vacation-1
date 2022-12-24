@@ -5,18 +5,23 @@ import {RoomThreeScene} from "./RoomThreeScene";
 import {RoomFourScene} from "./RoomFourScene";
 
 export class RoomsComposition extends THREE.Group {
-  constructor(pageSceneCreator, animationManager) {
+  constructor(pageSceneCreator, animationManager, diceLoader) {
     super();
 
     this.pageSceneCreator = pageSceneCreator;
     this.animationManager = animationManager;
+    this.diceLoader = diceLoader;
   }
 
   async constructRooms() {
     await this.addRoomOne();
+    this.diceLoader.increasePercentage(15);
     await this.addRoomTwo();
+    this.diceLoader.increasePercentage(15);
     await this.addRoomThree();
+    this.diceLoader.increasePercentage(15);
     await this.addRoomFour();
+    this.diceLoader.increasePercentage(15);
   }
 
   async addRoomOne() {

@@ -11,6 +11,7 @@ import FullPageScroll from "./modules/full-page-scroll";
 import "./modules/accent-typography.js";
 import "./3d-animations/initInfrastructure";
 import {SceneController} from "./3d-animations/SceneController";
+import {DiceLoader} from "./DiceLoader/DiceLoader";
 
 // init modules
 mobileHeight();
@@ -22,7 +23,8 @@ result();
 form();
 social();
 
-export const sceneController = new SceneController();
+export const diceLoader = new DiceLoader();
+export const sceneController = new SceneController(diceLoader);
 
 window.addEventListener(`load`, async () => {
   const isIntroPage = !window.location.hash || window.location.hash === "#top";
