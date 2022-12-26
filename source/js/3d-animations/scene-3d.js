@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import {isDesktop} from '../constants';
+import {isDesktop} from "../constants";
 
 export class Scene3d {
   constructor(config = {}) {
@@ -24,6 +24,8 @@ export class Scene3d {
 
     this.resize();
 
+    this.customRenderer = null;
+
     window.addEventListener("resize", () => {
       this.resizeInProgress = true;
     });
@@ -46,17 +48,19 @@ export class Scene3d {
 
   initRenderer() {
     const devicePixelRatio = window.devicePixelRatio;
+    this.devicePixelRation = Math.min(devicePixelRatio, 2);
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvasElement,
       alpha: true,
-      antialias: devicePixelRatio <= 1,
+      antialias: this.devicePixelRation <= 1,
       powerPreference: "high-performance",
+      logarithmicDepthBuffer: true,
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setClearColor(0x5f458c, 1);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.setPixelRatio(this.devicePixelRation);
 
     if (isDesktop) {
       this.renderer.shadowMap.enabled = true;
@@ -130,7 +134,20 @@ export class Scene3d {
   }
 
   render() {
+    if (this.customRenderer) {
+      this.customRenderer.render();
+      return;
+    }
+
     this.renderer.render(this.scene, this.camera);
+  }
+
+  setRenderer(renderer) {
+    this.customRenderer = renderer;
+  }
+
+  resetRender() {
+    this.customRenderer = null;
   }
 
   update() {
@@ -166,20 +183,12 @@ export class Scene3d {
     this.render();
   }
 
-  setSceneObjects(...meshObjects) {
-    this.clearScene();
-
-    this.meshObjects.add(...meshObjects);
-    this.scene.add(...meshObjects);
-  }
-
   resize() {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
     if (height < 1 || width < 1) return;
 
-    // camera resize
     if (width > height) {
       this.camera.fov = 35;
     } else {
@@ -188,7 +197,6 @@ export class Scene3d {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
 
-    // renderer resize
     this.renderer.setSize(width, height);
   }
 }
