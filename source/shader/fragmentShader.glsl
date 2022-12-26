@@ -4,6 +4,7 @@ precision mediump float;
 
 uniform sampler2D map;
 uniform float timestamp;
+uniform float aspectRatio;
 
 struct Bubble {
     vec2 bubblePosition;
@@ -46,8 +47,8 @@ vec4 getBorderColor() {
 }
 
 void drawBubble(inout vec4 outputColor, in Bubble bubble) {
-    vec2 currentPosition = vec2(vUv.x * float(IMAGE_ASPECT_RATIO), vUv.y);
-    vec2 currentBubblePosition = vec2(bubble.bubblePosition.x * float(IMAGE_ASPECT_RATIO), bubble.bubblePosition.y);
+    vec2 currentPosition = vec2(vUv.x * aspectRatio, vUv.y);
+    vec2 currentBubblePosition = vec2(bubble.bubblePosition.x * aspectRatio, bubble.bubblePosition.y);
 
     vec2 fromCurrentPixelToBubblePosition = currentPosition - currentBubblePosition;
     float distanceFromCurrentPixelToBubblePosition = length(currentPosition - currentBubblePosition);
