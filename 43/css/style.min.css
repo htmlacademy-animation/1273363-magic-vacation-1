@@ -4691,10 +4691,9 @@ body.loaded .dice_container {
 }
 
 .dice_text {
-  position: relative;
+  position: absolute;
   top: 60%;
-  left: 50%;
-  transform: translateX(-60%);
+  left: 51%;
   display: inline-block;
   text-transform: uppercase;
   font-family: "Radical", "Arial", sans-serif;
@@ -4702,8 +4701,6 @@ body.loaded .dice_container {
 }
 .dice_text:after {
   content: attr(data-percentage);
-  position: absolute;
-  right: -6rem;
 }
 
 #dice-loader {
