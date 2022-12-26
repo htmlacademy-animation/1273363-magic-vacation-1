@@ -15,10 +15,9 @@ $diceSize: 150px;
 }
 
 .dice_text {
-  position: relative;
+  position: absolute;
   top: 60%;
-  left: 50%;
-  transform: translateX(-60%);
+  left: 51%;
   display: inline-block;
 
   text-transform: uppercase;
@@ -27,8 +26,6 @@ $diceSize: 150px;
 
   &:after {
     content: attr(data-percentage);
-    position: absolute;
-    right: -6rem;
   }
 }
 
