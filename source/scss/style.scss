@@ -4,6 +4,7 @@
 @import "general/mixins.scss";
 @import "general/fonts.scss";
 @import "general/scaffolding.scss";
+@import "general/animations.scss";
 
 // Blocks
 @import "blocks/animation-screen.scss";
@@ -20,3 +21,12 @@
 @import "blocks/screen.scss";
 @import "blocks/slider.scss";
 @import "blocks/social-block.scss";
+@import "blocks/transition.scss";
+@import "blocks/accent-text.scss";
+@import "blocks/svg.scss";
+@import "blocks/dice-loader.scss";
+
+/* TODO: нужно для корректного отображения GUI */
+.dg.ac {
+  z-index: 1000 !important;
+}

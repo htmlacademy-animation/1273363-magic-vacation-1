@@ -36,6 +36,15 @@
   width: 10rem;
   color: $c-light;
 
+  transform: translateX(-2rem);
+  opacity: 0;
+  transition: transform 0.7s $custom-timing-function, opacity 0.7s $custom-timing-function;
+
+  body.loaded & {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
   @media (min-width: $stop-scaling) {
     top: -5px;
     padding: 10px 0;
@@ -131,6 +140,15 @@
   display: flex;
   align-items: center;
 
+  @media (min-width: $tablet) {
+    opacity: 0;
+    transition: opacity 1s $custom-timing-function;
+
+    body.loaded & {
+      opacity: 1;
+    }
+  }
+
   @media (max-width: $tablet) and (orientation: portrait) {
     position: fixed;
     top: 0;
@@ -175,7 +193,7 @@
   text-transform: uppercase;
   font-weight: 400;
   font-size: 1.2rem;
-  line-height: 1.0418;
+  line-height: 1;
   color: $c-light;
 
   @media (min-width: $stop-scaling) {
@@ -246,11 +264,11 @@
       content: "";
       position: absolute;
       bottom: 0;
-      width: 100%;
+      width: 0;
       height: 2px;
       background-color: $c-light;
-      display: none;
-      left: 0;
+      right: 0;
+      transition: width .5s ease;
 
       @media (max-width: $tablet) and (orientation: portrait) {
         left: 0;
@@ -267,7 +285,12 @@
 
     &.active {
       &::after {
-        display: block;
+        left: 0;
+        width: 0;
+
+        body.loaded & {
+          width: 100%;
+        }
       }
     }
 
@@ -276,9 +299,23 @@
       color: $c-purple;
       outline: none;
 
+      body.blue & {
+        color: $c-light-blue;
+      }
+
+      body.light-blue & {
+        color: $c-blue;
+      }
+
+      body.purple & {
+        color: $c-dark;
+      }
+
       &::after {
         opacity: 1;
-        background-color: $c-purple;
+        width: 100%;
+        left: 0;
+        background-color: currentColor;
       }
     }
   }

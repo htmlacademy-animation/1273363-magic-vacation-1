@@ -20,6 +20,10 @@
 
 html {
   box-sizing: border-box;
+
+  &.is-transitioning {
+    pointer-events: none;
+  }
 }
 
 *,
@@ -98,4 +102,12 @@ img {
   clip-path: inset(100%);
   clip: rect(0 0 0 0);
   overflow: hidden;
+}
+
+li {
+  list-style-type: none;
+}
+ol {
+  margin: 0;
+  padding: 0;
 }

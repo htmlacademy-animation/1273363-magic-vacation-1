@@ -4,11 +4,13 @@
   "description": "Личный проект «Таинственный отпуск» от HTML Academy",
   "devDependencies": {
     "@htmlacademy/editorconfig-cli": "1.x",
+    "@types/dat.gui": "^0.7.7",
     "copy-webpack-plugin": "5.1.1",
     "css-loader": "3.5.1",
     "csso-webpack-plugin": "2.0.0-beta.1",
     "eslint": "6.5.1",
     "eslint-config-htmlacademy": "0.5.2",
+    "eslint-config-prettier": "6.15.0",
     "gulp": "4.0.x",
     "gulp-imagemin": "5.0.3",
     "gulp-rename": "1.4.0",
@@ -31,6 +33,7 @@
     "webpack": "4.41.5",
     "webpack-cli": "3.3.11",
     "webpack-dev-server": "3.10.3",
+    "webpack-glsl-loader": "^1.0.1",
     "write-file-webpack-plugin": "4.5.1"
   },
   "scripts": {
@@ -55,6 +58,7 @@
     "source/sass/**/*.{sass,scss}"
   ],
   "dependencies": {
+    "dat.gui": "^0.7.9",
     "normalize.css": "8.0.1",
     "swiper": "5.3.8",
     "three": "0.115.0"

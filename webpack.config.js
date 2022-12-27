@@ -18,7 +18,7 @@ module.exports = {
     modules: ['./node_modules/'],
   },
   mode: 'development',
-  devtool: `source-map`,
+  devtool: 'source-map',
   devServer: {
     contentBase: path.join(__dirname, 'build'),
     port: 7777
@@ -80,9 +80,13 @@ module.exports = {
                 require('posthtml-include')({ root: 'source' })
               ]
             }
-          }
+          },
         ]
-      }
+      },
+      {
+        test: /\.glsl$/,
+        loader: "webpack-glsl-loader",
+      },
     ]
   },
   plugins: [

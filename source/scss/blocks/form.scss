@@ -2,6 +2,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: end;
 }
 
 .form__label {
@@ -32,9 +33,9 @@
 .form__field {
   flex: none;
   margin-right: 3rem;
-  padding: 0 5.6rem;
   height: 6rem;
-  width: calc(100% - 21rem);
+  width: 0;
+  padding: 0;
   text-transform: uppercase;
   font: inherit;
   font-size: 2.4rem;
@@ -44,6 +45,8 @@
   border-radius: 3rem;
   outline: none;
 
+  transition: width 0.5s ease, padding 0.5s ease;
+
   &:focus {
     border: 1px solid $c-purple;
   }
@@ -52,7 +55,6 @@
     margin-right: 30px;
     padding: 0 56px;
     height: 60px;
-    width: calc(100% - 210px);
     font-size: 24px;
     border-radius: 30px;
   }
@@ -60,30 +62,48 @@
   @media (orientation: portrait) {
     margin-right: 1rem;
     padding: 0 2.5rem;
-    width: calc(100% - 5rem);
     height: 4rem;
     font-size: 1.6rem;
-  }
-
-  @media (max-width: $tablet) and (orientation: landscape) {
-    width: calc(100% - 9rem);
   }
 
   @media (max-width: $mobile) and (orientation: landscape) {
     margin-right: 1rem;
     padding: 0 2.5rem;
-    width: calc(100% - 5rem);
     height: 4rem;
     font-size: 1.6rem;
+  }
+
+  .screen--game.active & {
+    width: calc(100% - 21rem);
+    padding: 0 5.6rem;
+
+    @media (min-width: $stop-scaling) {
+      width: calc(100% - 210px);
+    }
+
+    @media (orientation: portrait) {
+      width: calc(100% - 5rem);
+    }
+
+    @media (max-width: $tablet) and (orientation: landscape) {
+      width: calc(100% - 9rem);
+    }
+
+    @media (max-width: $mobile) and (orientation: landscape) {
+      width: calc(100% - 5rem);
+    }
   }
 }
 
 .form__button {
-  flex-grow: 1;
+  flex: none;
+
+  &--animated {
+    animation: fadeIn 0.5s ease-out 1.3s both, colorIn 0.7s ease-out 1.6s both;
+  }
 
   @media (orientation: portrait) {
     position: relative;
-    flex: none;
     padding: 0;
     width: 4rem;
     height: 4rem;
@@ -92,7 +112,6 @@
 
   @media (max-width: $tablet) and (orientation: landscape) {
     position: relative;
-    flex: none;
     padding: 0;
     width: 6rem;
     height: 6rem;
@@ -126,8 +145,71 @@
 }
 
 .form--result {
+  .form__labeled-field {
+    position: relative;
+    flex: none;
+    width: calc(100% - 31rem);
+    display: flex;
+    justify-content: end;
+
+    & > .form__field {
+      width: 100%;
+    }
+
+
+    @media (min-width: $stop-scaling) {
+      width: calc(100% - 310px);
+    }
+
+    @media (orientation: portrait) {
+      width: calc(100% - 5rem);
+    }
+
+    @media (max-width: $tablet) and (orientation: landscape) {
+      width: calc(100% - 9rem);
+    }
+
+    @media (max-width: $mobile) and (orientation: landscape) {
+      width: calc(100% - 5rem);
+    }
+  }
+
   .form__field {
     width: calc(100% - 31rem);
+    padding: 0 2em;
+
+    animation: inputFieldAppear 0.5s ease-out 1.3s both;
+
+    & + label {
+      position: absolute;
+      left: 2rem;
+      top: 0;
+      display: flex;
+      align-items: center;
+
+      font-size: 2.4rem;
+      line-height: 1.2;
+      height: 6rem;
+      pointer-events: none;
+
+      @media (max-width: $tablet) {
+        height: 4rem;
+        font-size: 1.6em;
+      }
+    }
+
+    & + label::before {
+      content: attr(data-label);
+      color: $c-dark;
+      text-transform: uppercase;
+
+      animation: fadeIn 0.5s ease-out 1.5s both;
+
+    }
+
+    &:focus + label::before, &:valid + label::before {
+      visibility: hidden;
+    }
 
     @media (min-width: $stop-scaling) {
       width: calc(100% - 310px);
