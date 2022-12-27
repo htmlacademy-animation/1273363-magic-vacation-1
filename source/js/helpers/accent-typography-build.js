@@ -5,8 +5,6 @@ export default class AccentTypographyBuild {
     this._element = node;
     this._options = options;
     this._delayGenerator = getDelayGenerator(options.letterDelays);
-
-    this.prepareText(this._element);
   }
 
   prepareText() {
@@ -39,23 +37,21 @@ export default class AccentTypographyBuild {
 
     return word.split(``).reduce((fragment, letter) => {
       const span = document.createElement(`span`);
-      const {duration = 400, delay = 0, timingFunction = `ease-out`} = this._options;
+      const {
+        duration = 400,
+        delay = 0,
+        timingFunction = `ease-out`,
+      } = this._options;
       span.textContent = letter;
-      span.style.transition = `${duration}ms ${timingFunction} ${
+      span.style.animationDuration = `${duration}ms`;
+      span.style.animationTimingFunction = timingFunction;
+      span.style.animationDelay = `${
         delay + wordDelay + this._delayGenerator.next().value
       }ms`;
 
       fragment.append(span);
       return fragment;
     }, document.createDocumentFragment());
-  }
-
-  runAnimation() {
-    this._element.classList.add(`active`);
-  }
-
-  stopAnimation() {
-    this._element.classList.remove(`active`);
   }
 }
 

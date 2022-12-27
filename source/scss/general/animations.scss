@@ -251,3 +251,23 @@
     color: $c-dark;
   }
 }
+
+@keyframes textAppearFromBottom {
+  from {
+    transform: translateY(1.5em);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutHalf {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.3;
+  }
+}

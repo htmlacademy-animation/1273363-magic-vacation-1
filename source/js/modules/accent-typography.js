@@ -27,10 +27,10 @@ const gameTitle = new AccentTypographyBuild(document.querySelector(`.game__title
 });
 
 window.addEventListener(`load`, () => {
-  introTitle.runAnimation();
-  introDate.runAnimation();
-  storyTitle.runAnimation();
-  prizesTitle.runAnimation();
-  rulesTitle.runAnimation();
-  gameTitle.runAnimation();
+  introTitle.prepareText();
+  introDate.prepareText();
+  storyTitle.prepareText();
+  prizesTitle.prepareText();
+  rulesTitle.prepareText();
+  gameTitle.prepareText();
 });
