@@ -18,10 +18,6 @@ export class Scene3d {
 
     this.render();
 
-    if (config.enableAnimation) {
-      this.update();
-    }
-
     this.resize();
 
     this.customRenderer = null;
@@ -48,7 +44,10 @@ export class Scene3d {
 
   initRenderer() {
     const devicePixelRatio = window.devicePixelRatio;
-    this.devicePixelRation = Math.min(devicePixelRatio, 2);
+    this.devicePixelRation =
+      window.innerHeight > window.innerWidth
+        ? Math.min(devicePixelRatio, 2)
+        : Math.min(devicePixelRatio, 1.5);
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvasElement,
@@ -163,8 +162,20 @@ export class Scene3d {
       });
     }
 
-    requestAnimationFrame(this.update);
+    this.cancelAnimationFrameId = requestAnimationFrame(this.update);
   };
+
+  startAnimation() {
+    this.stopAnimation();
+
+    this.update();
+  }
+
+  stopAnimation() {
+    if (this.cancelAnimationFrameId) {
+      window.cancelAnimationFrame(this.cancelAnimationFrameId);
+    }
+  }
 
   clearScene() {
     this.meshObjects.forEach((mesh) => {

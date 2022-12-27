@@ -3,6 +3,10 @@ import bodyTheme from "../helpers/body-theme";
 import {game} from "./game";
 import {prizesAnimation} from "./prizesAnimation";
 import {sceneController} from "../script";
+import {
+  sonyaAnimationEnd,
+  sonyaAnimationStart,
+} from "../helpers/sonyaAnimation";
 
 export default class FullPageScroll {
   constructor() {
@@ -75,50 +79,81 @@ export default class FullPageScroll {
       return;
     }
 
-    const isIntroPage = nextActiveScreen.classList.contains(`screen--intro`);
-    const isStoryPage = nextActiveScreen.classList.contains(`screen--story`);
+    const isNextIntroPage =
+      nextActiveScreen.classList.contains(`screen--intro`);
+    const isNextStoryPage =
+      nextActiveScreen.classList.contains(`screen--story`);
+    const isNextPrizesPage =
+      nextActiveScreen.classList.contains(`screen--prizes`);
+    const isNextGamePage = nextActiveScreen.classList.contains(`screen--game`);
+    const isNextRulesPage =
+      nextActiveScreen.classList.contains(`screen--rules`);
 
-    if (isIntroPage || isStoryPage) {
-      if (isIntroPage) {
-        sceneController.showMainScene();
-      } else if (isStoryPage) {
-        sceneController.showRoomScene();
-      }
+    const isPrevIntroPage =
+      prevActiveScreen && prevActiveScreen.classList.contains(`screen--intro`);
+    const isPrevStoryPage =
+      prevActiveScreen && prevActiveScreen.classList.contains(`screen--story`);
+    const isPrevGamePage =
+      prevActiveScreen && prevActiveScreen.classList.contains(`screen--game`);
+    const isPrevPrizesPage =
+      prevActiveScreen && prevActiveScreen.classList.contains(`screen--prizes`);
+    const isPrevRulesPage =
+      prevActiveScreen && prevActiveScreen.classList.contains(`screen--rules`);
+
+    if (isNextIntroPage) {
+      sceneController.showMainScene();
+    } else if (isNextStoryPage) {
+      sceneController.showRoomScene();
     }
 
-    if (
-      prevActiveScreen &&
-      prevActiveScreen.classList.contains(`screen--story`)
-    ) {
+    if (isNextStoryPage) {
+      bodyTheme.applyTheme();
+    } else if (isPrevStoryPage) {
       bodyTheme.clearBodyTheme();
     }
 
-    if (nextActiveScreen.classList.contains(`screen--story`)) {
-      bodyTheme.applyTheme();
-    }
-
-    // особый вид анимации переключения с вкладки история на вкладку призы
-    if (
-      prevActiveScreen &&
-      prevActiveScreen.classList.contains(`screen--story`) &&
-      nextActiveScreen.classList.contains(`screen--prizes`)
-    ) {
-      this.showTransitionScreen(prevActiveScreen, nextActiveScreen);
-      setTimeout(() => {
-        prizesAnimation.start();
-      }, 500);
-
-      return;
-    }
-
-    if (nextActiveScreen.classList.contains(`screen--prizes`)) {
+    if (isNextPrizesPage) {
       setTimeout(() => {
         prizesAnimation.start();
       }, 100);
     }
 
-    if (nextActiveScreen.classList.contains("screen--game")) {
+    if (isNextGamePage) {
       game.start();
+
+      sonyaAnimationStart();
+    } else if (isPrevGamePage) {
+      sonyaAnimationEnd();
+    }
+
+    // отключаем 3D-рендер, когда скрыты соответствующие экраны
+    if (isNextIntroPage || isNextStoryPage) {
+      sceneController.startAnimation();
+    } else {
+      sceneController.stopAnimation();
+    }
+
+    // особый вид анимации переключения с вкладок story/intro на вкладки
+    if (
+      (isPrevIntroPage || isPrevStoryPage) &&
+      (isNextGamePage || isNextRulesPage || isNextPrizesPage)
+    ) {
+      if (isNextPrizesPage) {
+        setTimeout(() => {
+          prizesAnimation.start();
+        }, 500);
+      }
+      this.showTransitionScreen(prevActiveScreen, nextActiveScreen);
+      return;
+    }
+
+    if (isPrevPrizesPage || isPrevRulesPage || isPrevGamePage) {
+      this.transitionBetweenScreenWithOpacity(
+        prevActiveScreen,
+        nextActiveScreen
+      );
+
+      return;
     }
 
     this.screenElements.forEach((screen) => {
@@ -144,10 +179,37 @@ export default class FullPageScroll {
     setTimeout(() => {
       nextActiveScreen.classList.remove(`screen--hidden`);
       nextActiveScreen.classList.add(`active`);
-      prevActiveScreen.classList.remove(`active`);
-      prevActiveScreen.classList.add(`screen--hidden`);
+
+      if (prevActiveScreen) {
+        prevActiveScreen.classList.remove(`active`);
+        prevActiveScreen.classList.add(`screen--hidden`);
+      }
 
       document.documentElement.classList.remove(`is-transitioning`);
+      this.transitionBackground.classList.remove(
+        `transition--background__show`
+      );
+    }, 400);
+  }
+
+  /**
+   * Запускаем плавный переход между экранами через исчезновение
+   *
+   * @param {HTMLElement} prevActiveScreen
+   * @param {HTMLElement} nextActiveScreen
+   */
+  transitionBetweenScreenWithOpacity(prevActiveScreen, nextActiveScreen) {
+    prevActiveScreen.classList.add("screen--fadeOut");
+    this.transitionBackground.classList.add(`transition--background__show`);
+
+    setTimeout(() => {
+      prevActiveScreen.classList.remove(`screen--fadeOut`);
+
+      nextActiveScreen.classList.remove(`screen--hidden`);
+      nextActiveScreen.classList.add(`active`);
+
+      prevActiveScreen.classList.remove(`active`);
+      prevActiveScreen.classList.add(`screen--hidden`);
       this.transitionBackground.classList.remove(
         `transition--background__show`
       );

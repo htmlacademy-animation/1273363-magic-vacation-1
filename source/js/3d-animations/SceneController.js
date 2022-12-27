@@ -58,7 +58,6 @@ export class SceneController {
     this.infrastructure = new Scene3d({
       elementId: "canvas--animation-screen",
       cameraConfig: { fov: 35, near: 1, far: 5500 },
-      enableAnimation: true,
       // stats: [stats1, stats2]
     });
     this.diceLoader = diceLoader;
@@ -92,6 +91,10 @@ export class SceneController {
     await this.addRoomsPageScene();
     await this.initSuitCase();
 
+    this.addCameraRig();
+
+    this.infrastructure.startAnimation();
+
     if (startSceneIndex === 0) {
       animationManager.startMainPageAnimations();
       this.isMainPageObjectsAppear = true;
@@ -100,8 +103,14 @@ export class SceneController {
       animationManager.startSuitcaseAnimations();
       this.isSuitcaseAppear = true;
     }
+  }
 
-    this.addCameraRig();
+  startAnimation() {
+    this.infrastructure.startAnimation()
+  }
+
+  stopAnimation() {
+    this.infrastructure.stopAnimation()
   }
 
   async addMainPageScene() {
@@ -466,7 +475,7 @@ export class SceneController {
               0.02 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5)
             );
           },
-          getPositionY: (y) => y + 0.005,
+          getPositionY: (y) => y + 0.01,
         }),
         bubble2: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, -2 * 0.06),
@@ -480,7 +489,7 @@ export class SceneController {
               0.03 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2.5)
             );
           },
-          getPositionY: (y) => y + 0.005,
+          getPositionY: (y) => y + 0.01,
         }),
         bubble3: new THREE.Uniform({
           bubblePosition: new THREE.Vector2(0, -2 * 0.04),
@@ -494,7 +503,7 @@ export class SceneController {
               0.01 * Math.exp(-0.05 * time) * Math.sin(Math.PI * time * 2)
             );
           },
-          getPositionY: (y) => y + 0.006,
+          getPositionY: (y) => y + 0.012,
         }),
         hasBubbles: new THREE.Uniform(false),
       },

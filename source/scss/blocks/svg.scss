@@ -1,5 +1,5 @@
 svg.svg__winning-word {
-  animation: zoomOut 767ms cubic-bezier(0.21, 0, 0, 1) both;
+  animation: zoomOutSvg 767ms cubic-bezier(0.21, 0, 0, 1) both;
 
   & > g {
     animation: letterArrear 432ms cubic-bezier(0.21, 0, 0.8, 1) both;
@@ -43,7 +43,7 @@ svg.svg__lose-word > g {
   }
 }
 
-@keyframes zoomOut {
+@keyframes zoomOutSvg {
   from {
     transform: scale(1.15);
   }
