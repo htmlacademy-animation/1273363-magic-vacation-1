@@ -85,6 +85,10 @@
   p {
     margin: 0;
   }
+
+  body.loaded & {
+    animation: fadeInUp .6s ease-out .6s both;
+  }
 }
 
 .rules__list {
@@ -179,18 +183,36 @@
     content: "";
     background-color: $c-purple;
     border-radius: 50%;
-    animation: zoomIn 0.6s $bounce-timing-function both;
+
+    body.loaded & {
+      animation-name: zoomIn;
+      animation-duration: .6s;
+      animation-timing-function: $bounce-timing-function;
+      animation-fill-mode: both;
+    }
   }
 
   &::after {
     content: counter(li);
     counter-increment: li;
-    animation: fadeIn 0.6s ease both;
+
+    body.loaded & {
+      animation-name: fadeIn;
+      animation-duration: .6s;
+      animation-timing-function: ease;
+      animation-fill-mode: both;
+    }
   }
 
   p {
     margin: 0;
-    animation: fadeInRight 0.6s ease both;
+
+    body.loaded & {
+      animation-name: fadeInRight;
+      animation-duration: .6s;
+      animation-timing-function: ease;
+      animation-fill-mode: both;
+    }
 
     @media (max-width: $tablet) and (orientation: portrait) {
       min-height: calc(1.4rem * 2.2);
@@ -200,11 +222,11 @@
   @for $i from 1 to 5 {
     &:nth-child(#{$i})::before,
     &:nth-child(#{$i})::after {
-      animation-delay: calc((#{$i} - 1) * 0.2s);
+      animation-delay: calc(1.2s + (#{$i} - 1) * 0.2s);
     }
 
     &:nth-child(#{$i}) > p {
-      animation-delay: calc((#{$i}) * 0.2s);
+      animation-delay: calc(1.2s + (#{$i}) * 0.2s);
     }
   }
 }
@@ -218,12 +240,18 @@
     right: 0;
     left: initial;
     transform: translate3D(0, -50%, 0);
-    animation: buttonAppear 0.5s ease .8s both, fadeIn 0.5s ease 0.8s both;
+
+    body.loaded & {
+      animation: buttonAppear .5s ease 2s both, fadeIn .5s ease 2s both;
+    }
   }
 
   &::after {
     content: "Погнали!";
-    animation: fadeIn 0.5s ease 1s backwards;
+
+    body.loaded & {
+      animation: fadeIn .5s ease 2.4s backwards;
+    }
   }
 
 

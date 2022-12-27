@@ -11,7 +11,7 @@
   }
 
   &.screen--fadeOut .screen__wrapper {
-    animation: fadeOut 0.4s ease-out, zoomOut 1.5s ease-out;
+    animation: fadeOut 0.4s ease-out, zoomOut 3s linear;
   }
 
   @media (max-width: $tablet) and (orientation: portrait) {

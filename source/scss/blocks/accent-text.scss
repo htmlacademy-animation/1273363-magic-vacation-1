@@ -6,12 +6,13 @@
     overflow: hidden;
 
     & > span {
-      transform: translate3d(0, 1.5em, 0);
+      transform: translateY(1.5em);
       display: inline-block;
     }
   }
 
-  .screen.active &.active > &__word > span {
-    transform: translate3d(0, 0, 0);
+  .screen.active &__word > span {
+    animation-name: textAppearFromBottom;
+    animation-fill-mode: both;
   }
 }

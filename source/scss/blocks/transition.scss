@@ -17,15 +17,14 @@
     width: 100%;
     height: 100%;
     background-color: $c-dark;
-    transform: translateY(-100%);
+    transform: translateY(100%);
 
     &__show {
       transform: translateY(0);
     }
 
     html.is-transitioning &__show {
-      z-index: 5;
-      animation: slideInUpBig .4s ease-in forwards;
+      animation: slideInUpBig .4s ease-in;
     }
   }
 }

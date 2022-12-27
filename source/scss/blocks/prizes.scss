@@ -90,6 +90,10 @@
   p {
     margin: 0;
   }
+
+  body.loaded & {
+    animation: fadeInUp .6s ease-out .6s both;
+  }
 }
 
 .prizes__list {
