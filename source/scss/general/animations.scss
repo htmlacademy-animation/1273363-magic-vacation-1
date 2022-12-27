@@ -4,6 +4,12 @@
   }
 }
 
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes fadeInRight {
   from {
     transform: translateX(4rem);
@@ -55,6 +61,12 @@
 
   to {
     transform: scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  to {
+    transform: scale(0);
   }
 }
 

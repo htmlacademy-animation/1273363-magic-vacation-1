@@ -1,5 +1,6 @@
 import { game } from "./game";
 import {runLosingScene, runWinningScene} from "../2d-animations/main";
+import {sonyaAnimationEnd} from '../helpers/sonyaAnimation';
 
 export default () => {
   let showResultEls = document.querySelectorAll(`.js-show-result`);
@@ -8,6 +9,7 @@ export default () => {
     for (let i = 0; i < showResultEls.length; i++) {
       showResultEls[i].addEventListener(`click`, function () {
         game.end();
+        sonyaAnimationEnd();
 
         let target = showResultEls[i].getAttribute(`data-target`);
 

@@ -20,6 +20,11 @@
     transform: translateY(-100%);
 
     &__show {
+      transform: translateY(0);
+    }
+
+    html.is-transitioning &__show {
+      z-index: 5;
       animation: slideInUpBig .4s ease-in forwards;
     }
   }
